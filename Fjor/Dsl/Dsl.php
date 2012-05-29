@@ -47,11 +47,17 @@ class Dsl extends Fjor implements Given, ThenUse, InSingletonScope, ConstructWit
 		return $this;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function inSingletonScope()
 	{
 		$this->setSingleton($this->thenUse);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function constructWith(array $values)
 	{
 		$target = ($this->thenUse === null) ? $this->given : $this->thenUse;

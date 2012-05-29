@@ -296,4 +296,20 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue($storage->contains($obj1));
 		$this->assertTrue($storage->contains($obj2));
  	}
+ 
+ 	/**
+ 	 * @test
+ 	 */
+ 	public function bindingInterfacesToSameSingletonGetsSameObject()
+ 	{
+ 		$class = '\\SplObjectStorage';
+ 		$this->ioc->setSingleton($class);
+ 		$this->ioc->given('\\ArrayAccess')->thenUse($class);
+ 		$this->ioc->given('\\Iterator')->thenUse($class);
+ 
+ 		$this->assertSame(
+ 			$this->ioc->get('\\ArrayAccess'),
+ 			$this->ioc->get('\\Iterator')
+ 		);
+ 	}
 }

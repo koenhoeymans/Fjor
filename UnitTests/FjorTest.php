@@ -42,19 +42,19 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @test
 	 */
-	public function setSingletonReturnsTheSameObject()
+	public function classCanBeSingleton()
 	{
-		$this->fjor->setSingleton('StdClass');
-
 		$this->factory
-			->expects($this->atLeastOnce())
+			->expects($this->once())
 			->method('createInstance')
-			->will($this->returnValue(new stdClass()));
-		
-		$obj_1 = $this->fjor->get('StdClass');
-		$obj_2 = $this->fjor->get('StdClass');
-
-		$this->assertSame($obj_1, $obj_2);
+			->will($this->returnValue(new \SplObjectStorage()));
+	
+		$this->fjor->setSingleton('SplObjectStorage');
+	
+		$this->assertSame(
+			$this->fjor->get('SplObjectStorage'),
+			$this->fjor->get('SplObjectStorage')
+		);
 	}
 
 	/**
@@ -138,23 +138,6 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 		$this->assertSame(
 			$obj,
 			$this->fjor->get('ArrayAccess')
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function classCanBeSingleton()
-	{	$this->factory
-			->expects($this->once())
-			->method('createInstance')
-			->will($this->returnValue(new \SplObjectStorage()));
-		
-		$this->fjor->setSingleton('SplObjectStorage');
-		
-		$this->assertSame(
-			$this->fjor->get('SplObjectStorage'),
-			$this->fjor->get('SplObjectStorage')
 		);
 	}
 

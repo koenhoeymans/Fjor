@@ -18,11 +18,15 @@ class Fjor
 	private $factory;
 
 	/**
-	 * array($name => $instance)
+	 * array($name => $instance|true)
+	 * 
+	 * `$instance` is an object if one already created, `true`
+	 * when the bound class or interface should be a singletone but
+	 * no implementation is created yet
 	 * 
 	 * @var array
 	 */
-	private $instances = array();
+	private $singleton = array();
 
 	/**
 	 * array('class/interface' => array(
@@ -53,7 +57,7 @@ class Fjor
 
 		if (is_object($toClassOrInstance))
 		{
-			$this->setInstance($name, $toClassOrInstance);
+			$this->addSingleton($name, $toClassOrInstance);
 		}
 		else
 		{
@@ -69,7 +73,7 @@ class Fjor
 	public function setSingleton($interfaceOrClass)
 	{
 		$interfaceOrClass = $this->normalize($interfaceOrClass);
-		$this->setInstance($interfaceOrClass, true);
+		$this->addSingleton($interfaceOrClass, true);
 	}
 
 	public function getFactory($class)
@@ -84,31 +88,38 @@ class Fjor
 	{
 		$classOrInterface = $this->normalize($classOrInterface);
 
-		$instance = $this->getInstance($classOrInterface);
+		$singleton = $this->getSingleton($classOrInterface);
 
-		if (is_object($instance))
+		if (is_object($singleton))
 		{
-			return $instance;
+			return $singleton;
 		}
 
+		$obj = $this->getObject($classOrInterface);
+
+		if ($singleton)
+		{
+			$this->addSingleton($classOrInterface, $obj);
+		}
+
+		return $obj;
+	}
+
+	private function getObject($classOrInterface)
+	{
 		if (class_exists($classOrInterface))
 		{
 			$obj = $this->createClassInstance($classOrInterface);
 		}
 		elseif (interface_exists($classOrInterface))
 		{
-			$obj = $this->getImplementation($classOrInterface);
+			$obj = $this->getInterfaceImplementation($classOrInterface);
 		}
 		else
 		{
 			throw new \Exception(
-				'Interface or Class "' . $classOrInterface . '" does not seem to exist.'
+						'Interface or Class "' . $classOrInterface . '" does not seem to exist.'
 			);
-		}
-
-		if ($instance)
-		{
-			$this->setInstance($classOrInterface, $obj);
 		}
 
 		return $obj;
@@ -124,20 +135,19 @@ class Fjor
 			);
 		}
 
-		return $this->bindings[$class]['factory']
-				->createInstance($class, $this->getInjectionMap($class), $this);
+		return $this->getFactory($class)->createInstance(
+			$class, $this->getInjectionMap($class), $this
+		);
 	}
 
-	private function getImplementation($interface)
+	private function getInterfaceImplementation($interface)
 	{
 		if (!isset($this->bindings[$interface]))
 		{
 			throw new \Exception('No binding specified for ' . $interface);
 		}
 
-		return $this->bindings[$interface]['factory']->createInstance(
-			$this->bindings[$interface]['to'],$this->getInjectionMap($interface), $this
-		);
+		return $this->get($this->bindings[$interface]['to']);
 	}
 
 	private function normalize($name)
@@ -174,13 +184,13 @@ class Fjor
 		return $this->injections[$class];
 	}
 
-	private function setInstance($key, $value)
+	private function addSingleton($key, $value)
 	{
-		$this->instances[$key] = $value;
+		$this->singleton[$key] = $value;
 	}
 
-	private function getInstance($key)
+	private function getSingleton($key)
 	{
-		return isset($this->instances[$key]) ? $this->instances[$key] : null;
+		return isset($this->singleton[$key]) ? $this->singleton[$key] : null;
 	}
 }
