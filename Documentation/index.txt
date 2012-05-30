@@ -1,5 +1,12 @@
-Fjor
-====
+What is Fjor
+============
+
+Fjor is a library for PHP that makes it easy to handle dependencies. Your application
+typically is wired together by a web of objects that interact. The construction of
+that web can be handled by Fjor.
+
+Using Fjor
+==========
 
 Setting up Fjor:
 
@@ -132,7 +139,7 @@ After Fjor has created Batman it will call method `goGet` with `$joker` as param
 with constructors this can be a real value or the name of a class Fjor should create
 first.
 
-Multiple calls to the method are possible:
+Multiple injections in a method are possible:
 
 	$fjor->given('Batman')->andMethod('goGet')
 		->addParam($joker)
