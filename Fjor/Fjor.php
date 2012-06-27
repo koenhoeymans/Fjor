@@ -136,7 +136,7 @@ class Fjor
 		}
 
 		return $this->getFactory($class)->createInstance(
-			$class, $this->getInjectionMap($class), $this
+			$class, $this->getCombinedInjectionMap($class), $this
 		);
 	}
 
@@ -174,6 +174,11 @@ class Fjor
 		$this->injections[$class] = new InjectionMap();
 	}
 
+	private function hasInjectionMap($class)
+	{
+		return isset($this->injections[$class]);
+	}
+
 	private function getInjectionMap($class)
 	{
 		if (!isset($this->injections[$class]))
@@ -182,6 +187,23 @@ class Fjor
 		}
 
 		return $this->injections[$class];
+	}
+
+	private function getCombinedInjectionMap($class)
+	{
+		$map = $this->getInjectionMap($class);
+
+		foreach (class_implements($class) as $implementation)
+		{
+			$implementation = $this->normalize($implementation);
+			if (!$this->hasInjectionMap($implementation))
+			{
+				continue;
+			}
+			$map = $map->combine($this->getInjectionMap($implementation));
+		}
+
+		return $map;
 	}
 
 	private function addSingleton($key, $value)

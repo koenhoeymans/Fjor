@@ -32,7 +32,7 @@ class InjectionMap
 
 	/**
 	 * @param string $method
-	 * @return array
+	 * @return array An array of arrays with parameters.
 	 */
 	public function getParams($method)
 	{
@@ -51,5 +51,28 @@ class InjectionMap
 	{
 		$this->injections[$method][] = $params;
 		return $this;
+	}
+
+	/**
+	 * Adds injections from a map to this one and returns a new combined one.
+	 * 
+	 * @param InjectionMap $map
+	 * @return InjectionMap A new InjectionMap.
+	 */
+	public function combine(InjectionMap $map)
+	{
+		$combinedMap = clone $this;
+		$methods = $map->getMethods();
+
+		foreach ($methods as $method)
+		{
+			$parameterCombinations = $map->getParams($method);
+			foreach ($parameterCombinations as $parameterCombination)
+			{
+				$combinedMap->add($method, $parameterCombination);
+			}
+		}
+
+		return $combinedMap;
 	}
 }

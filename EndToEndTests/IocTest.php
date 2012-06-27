@@ -235,13 +235,7 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 				->andMethod('push')
 				->addParam(array(5));
 
-		$obj = new \SplStack();
-		$obj->push(5);
-
-		$this->assertEquals(
-			$obj->pop(),
-			$this->ioc->get('SplStack')->pop()
-		);
+		$this->assertEquals(5, $this->ioc->get('SplStack')->pop());
  	}
 
 	/**
@@ -295,6 +289,25 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 
 		$this->assertTrue($storage->contains($obj1));
 		$this->assertTrue($storage->contains($obj2));
+ 	}
+ 
+ 	/**
+ 	 * @test
+ 	 */
+ 	public function argumentsCanBeSetForInterfaceSoThatGettingObjectWillInheritSettings()
+ 	{
+ 		$obj = new \stdClass();
+ 		$this->ioc
+	 		->given('ArrayAccess')
+	 		->andMethod('offsetSet')
+	 		->addParam(array($obj, 'foo'));
+
+ 		$storage = $this->ioc->get('SplObjectStorage');
+ 
+ 		$this->assertEquals(
+ 			'foo',
+ 			$storage->offsetGet($obj)
+ 		);
  	}
  
  	/**
