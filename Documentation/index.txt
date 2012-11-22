@@ -1,23 +1,36 @@
+------------
 What is Fjor
-============
+------------
 
 Fjor is a library for PHP that makes it easy to handle dependencies. Your application
 typically is wired together by a web of objects that interact. The construction of
 that web can be handled by Fjor.
 
+----------
 Using Fjor
-==========
+----------
 
-Setting up Fjor:
+Setting up Fjor
+===============
+
+There's a fluent interface especially created to make working with Fjor easy. To
+set it up you need one dependency being a default factory to create objects. Most of the
+time the generic one that's provided with Fjor will do.
 
 	$fjor = new \Fjor\Dsl\Dsl(new \Fjor\ObjectFactory\GenericObjectFactory());
 
-This will create a new instance of Fjor using a fluent interface. This guide will
-explain how you can use it. This is also the supported API.
+The above code will create a new instance of Fjor using a fluent interface. This
+guide will explain how you can use it. This is also the supported API.
 
-Getting an instance of a class:
+Getting objects
+===============
 
-	$fjor->get('MyClass');
+Getting an instance of a class is straightforward:
+
+	$fjor->get('StdClass');
+
+The [StdClass](http://php.net/manual/en/reserved.classes.php) has no constructor
+dependencies and is rather trivial to create.
 
 If only one instance is needed:
 
@@ -137,7 +150,7 @@ method right after creation it's possible to tell Fjor to inject them:
 
 After Fjor has created Batman it will call method `goGet` with `$joker` as parameter. As
 with constructors this can be a real value or the name of a class Fjor should create
-first.
+first and then inject.
 
 Multiple injections in a method are possible:
 
