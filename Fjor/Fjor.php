@@ -118,7 +118,7 @@ class Fjor
 		else
 		{
 			throw new \Exception(
-						'Interface or Class "' . $classOrInterface . '" does not seem to exist.'
+				'Interface or Class "' . $classOrInterface . '" does not seem to exist.'
 			);
 		}
 
