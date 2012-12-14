@@ -1,5 +1,5 @@
 {
-	"name": "Fjor/Fjor",
+	"name": "fjor/fjor",
 	"autoload": {
 		"psr-0": { "Fjor": "/" }
 	}
