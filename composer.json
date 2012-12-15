@@ -1,5 +1,15 @@
 {
 	"name": "fjor/fjor",
+	"description": "PHP Dependency Injection Framework",
+	"license": "BSD-2-Clause",
+	"authors": [{
+		"name": "Koen Hoeymans",
+		"email": "koenhoeymans@gmail.com",
+		"role": "lead"
+	}],
+	"require": {
+		"php": ">=5.4.6"
+	},
 	"autoload": {
 		"psr-0": { "Fjor": "/" }
 	}
