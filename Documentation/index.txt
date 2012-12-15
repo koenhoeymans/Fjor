@@ -10,6 +10,33 @@ that web can be handled by Fjor.
 Using Fjor
 ----------
 
+Installation
+============
+
+### downloading ###
+
+Fjor can be downloaded from [github](https://github.com/koenhoeymans/Fjor/tags). It
+contains an autoloader so all you need to be able to set up a Fjor instance (see below)
+is loading it:
+
+	require_once __DIR__
+		. DIRECTORY_SEPARATOR . 'to'
+		. DIRECTORY_SEPARATOR . 'Fjor'
+		. DIRECTORY_SEPARATOR . 'Autoload.php';
+
+### through composer ###
+
+If you don't know yet about Composer you may want to read an
+[introduction](http://getcomposer.org/doc/00-intro.md) first. After you installed
+composer create a `composer.json` file with at least the following:
+
+	{
+		"require": {
+			"fjor/fjor": "0.1.*"
+		}
+	}
+
+
 Setting up Fjor
 ===============
 
