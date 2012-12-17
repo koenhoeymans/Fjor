@@ -184,3 +184,40 @@ Multiple injections in a method are possible:
 	$fjor->given('Batman')->andMethod('goGet')
 		->addParam($joker)
 		->addParam($harleyQuinn);
+
+Best Practices
+==============
+
+### Object Graph Construction ###
+
+When setting up your project there is a web of objects that collaborate. Often
+the relationships are defined through the constructor. These dependencies are
+what an object needs to fulfill its responsibilities. Upon instantiation of your
+main class these dependencies need to be constructed. Fjor helps in making this
+initial setup easy to manage.
+
+### Object Factories ###
+
+Not all objects are constructed from the beginning. Some objects are only created
+when the need arises or after is determined what specific object will be needed
+to handle a job. Factories are great to encapsulate the creational logic. When
+they know what type of object needs to be created Fjor is there to create it,
+taking responsibility of its creation.
+
+### How not to use Fjor ###
+
+Generally you should try to avoid depending on Fjor for getting objects instead
+of specifying the service you needed in the first place:
+
+	public function login(User $user, Fjor $fjor) {
+		$logger = $fjor->get('Logger');
+		$logger->log('trying to log in user ' . $user->getName());
+	}
+
+In the above code we actually don't need Fjor to do what we want. Fjor is added
+as a dependency to give us what we need (the logger). What we should do is
+ask for the logger instead of Fjor:
+
+	public function login(User $user, Logger $logger) {
+		$logger->log('trying to log in user ' . $user->getName());
+	}
