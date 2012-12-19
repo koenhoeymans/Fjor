@@ -10,8 +10,13 @@ that web can be handled by Fjor.
 Using Fjor
 ----------
 
+Before you can use Fjor you need to install it and create an instance of Fjor.
+
 Installation
 ============
+
+Installation is possible by either downloading it or by installation through
+Composer.
 
 ### downloading ###
 
@@ -176,7 +181,7 @@ method right after creation it's possible to tell Fjor to inject them:
 	$fjor->given('Batman')->andMethod('goGet')->addParam($joker);
 
 After Fjor has created Batman it will call method `goGet` with `$joker` as parameter. As
-with constructors this can be a real value or the name of a class Fjor should create
+with constructors this can be a primitive value or the name of a class Fjor should create
 first and then inject.
 
 Multiple injections in a method are possible:
