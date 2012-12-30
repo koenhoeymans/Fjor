@@ -24,7 +24,7 @@ Fjor can be downloaded from [github](https://github.com/koenhoeymans/Fjor/tags).
 contains an autoloader so all you need to be able to set up a Fjor instance (see below)
 is loading it:
 
-  require_once __DIR__
+	require_once __DIR__
 		. DIRECTORY_SEPARATOR . 'to'
 		. DIRECTORY_SEPARATOR . 'Fjor'
 		. DIRECTORY_SEPARATOR . 'Autoload.php';
