@@ -1,0 +1,373 @@
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Fjor - PHP Dependency Injection Framework</title>
+<style>
+body {
+	background: #fff;
+	line-height: 1;
+	padding: 0 2em;
+	font: 15px "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-align: center;
+}
+
+h1, h2, h3 {
+	color: #333;
+}
+
+h1 {
+	font-size: 1.3em;
+	text-transform: uppercase;
+	margin-top: 40px;
+}
+
+h2 {
+	font-size: 1.2em;
+}
+
+h3 {
+	font-size: 1em;
+	padding: 0 5px;
+}
+
+/* http://stackoverflow.com/questions/535334/html-css-autonumber-headings */
+
+body{counter-reset: section}
+h1{counter-reset: sub-section}
+h2{counter-reset: composite}
+h3{counter-reset: detail}
+
+h1:before{
+	counter-increment: section;
+	content: counter(section) " ";
+}
+
+h2:before{
+	counter-increment: sub-section;
+	content: counter(section) "." counter(sub-section) " ";
+}
+
+h3:before{
+	counter-increment: composite;
+	content: counter(section) "." counter(sub-section) "." counter(composite) " ";
+}
+
+a {
+	color: #0088CC;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+#page {
+	margin: auto;
+	text-align: left;
+	max-width: 750px;
+}
+
+#site-title {
+	margin-top: 40px;
+}
+
+#site-title a {
+	color: #444;
+	font-size: 50px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#site-description {
+	padding-bottom: 40px;
+	color: #7a7a7a;
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+#header img {
+	max-width: 750px;
+	margin-bottom: 50px;
+}
+
+#footer {
+	clear: both;
+	margin-top: 50px;
+	padding: 20px;
+	text-align: center;
+	background-color: #333;
+	color: #eee;
+}
+
+#footer a {
+	color: #eee;
+	text-decoration: none;
+}
+
+code {
+	background: #f4f4f4;
+	font: monospace;
+	font-size: 0.8em;
+	border: 1px solid #ddd;
+	padding: 0 4px;
+}
+
+pre {
+	background: #f4f4f4;
+	border: 1px solid #ddd;
+	padding: 15px;
+}
+
+pre code {
+	border: none;
+	font-size: 0.8em;
+	line-height: 1.3em;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="page">
+	<div id="header">
+		<div id="site-title"><a href="">FJOR</a></div>
+		<div id="site-description">PHP Dependency Injection Framework</div>
+		<img src="header.jpg" />
+	</div>
+
+
+	<div id="main">
+		<ul><li><a href="#what-is-fjor">What is Fjor</a></li><li><a href="#using-fjor">Using Fjor</a><ul><li><a href="#installation">Installation</a><ul><li><a href="#downloading">downloading</a></li><li><a href="#through-composer">through composer</a></li></ul></li><li><a href="#setting-up-fjor">Setting up Fjor</a></li><li><a href="#getting-objects">Getting objects</a></li><li><a href="#best-practices">Best Practices</a><ul><li><a href="#object-graph-construction">Object Graph Construction</a></li><li><a href="#object-factories">Object Factories</a></li><li><a href="#how-not-to-use-fjor">How not to use Fjor</a></li></ul></li></ul></li></ul>		<doc><h1 id="what-is-fjor">What is Fjor</h1>
+
+<p>Fjor is a library for PHP that makes it easy to handle dependencies. Your application
+typically is wired together by a web of objects that interact. The construction of
+that web can be handled by Fjor.</p>
+
+<h1 id="using-fjor">Using Fjor</h1>
+
+<p>Before you can use Fjor you need to install it and create an instance of Fjor.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>Installation is possible by either downloading it or by installation through
+Composer.</p>
+
+<h3 id="downloading">downloading</h3>
+
+<p>Fjor can be downloaded from <a href="https://github.com/koenhoeymans/Fjor/tags">github</a>. It
+contains an autoloader so all you need to be able to set up a Fjor instance (see below)
+is loading it:</p>
+
+<pre><code>require_once __DIR__
+    . DIRECTORY_SEPARATOR . 'to'
+    . DIRECTORY_SEPARATOR . 'Fjor'
+    . DIRECTORY_SEPARATOR . 'Autoload.php';</code></pre>
+
+<h3 id="through-composer">through composer</h3>
+
+<p>If you don't know yet about Composer you may want to read an
+<a href="http://getcomposer.org/doc/00-intro.md">introduction</a> first. After you installed
+composer create a <code>composer.json</code> file with at least the following:</p>
+
+<pre><code>{
+    "require": {
+        "fjor/fjor": "0.1.*"
+    }
+}</code></pre>
+
+
+<h2 id="setting-up-fjor">Setting up Fjor</h2>
+
+<p>There's a fluent interface especially created to make working with Fjor easy. To
+set it up you need one dependency being a default factory to create objects. Most of the
+time the generic one that's provided with Fjor will do.</p>
+
+<pre><code>$fjor = new \Fjor\Dsl\Dsl(new \Fjor\ObjectFactory\GenericObjectFactory());</code></pre>
+
+<p>The above code will create a new instance of Fjor using a fluent interface. This
+guide will explain how you can use it. This is also the supported API.</p>
+
+<h2 id="getting-objects">Getting objects</h2>
+
+<p>Getting an instance of a class is straightforward:</p>
+
+<pre><code>$fjor-&gt;get('StdClass');</code></pre>
+
+<p>The <a href="http://php.net/manual/en/reserved.classes.php">StdClass</a> has no constructor
+dependencies and is rather trivial to create.</p>
+
+<p>If only one instance is needed:</p>
+
+<pre><code>$fjor-&gt;setSingleton('MyClass');</code></pre>
+
+<p>This will ensure the same instance is returned every time.</p>
+
+<p>Dependencies are automatically injected if a class is specified as a type hint. In the
+following example Fjor knows an instance of <code>Bar</code> is needed:</p>
+
+<pre><code>class Foo {
+    public function __construct(Bar $bar) {}
+}
+
+class Bar
+{}</code></pre>
+
+<p>If a parameter is optional there will be no value injected if not specified:</p>
+
+<pre><code>class Foo {
+    public function __construct(Bar $bar = null) {}
+}</code></pre>
+
+<p>If a parameter type hint is an interface you can tell Fjor what class to use as
+implementation. Given following:</p>
+
+<pre><code>interface Hero {
+    public function help($name);
+}
+
+class Batman implements Hero {
+    public function help($name) {
+        echo "Starting batmobile on my way to help $name"; 
+    }
+}
+
+class Movie {
+    private $hero;
+
+    public function __construct(Hero $hero) {
+        $this-&gt;hero = $hero;
+    }
+
+    public function addHeroicAction() {
+        $this-&gt;hero-&gt;help('citizen in trouble');
+    }
+}</code></pre>
+
+<p>Constructing a movie presents a problem to Fjor because it can't instantiate an
+interface. We need to specify what implementation it should use when it encounters
+a <code>Hero</code>:</p>
+
+<pre><code>$fjor-&gt;given('Hero')-&gt;thenUse('Batman');</code></pre>
+
+<p>When Fjor now encounters a <code>Hero</code> it knows we want to use <code>Batman</code> as our hero. If
+you already have a real Batman you can register him as implementation too:</p>
+
+<pre><code>$batman = new Batman();
+$fjor-&gt;given('Hero')-&gt;thenUse($batman);</code></pre>
+
+<p>Everytime Fjor needs a <code>Hero</code> it will use this instance. If you would like Fjor to
+create one instance only of a certain class or interface you don't need to have
+your own instance and register that. This will do:</p>
+
+<pre><code>$fjor-&gt;setSingleton('Batman');</code></pre>
+
+<p>Fjor will now create only one instance of Batman and use it whenever a <code>Batman</code> is
+needed. The same is true for interfaces:</p>
+
+<pre><code>$fjor-&gt;setSingleton('Hero');
+$fjor-&gt;given('Hero')-&gt;thenUse('Batman');</code></pre>
+
+<p>This will provide only one <code>Batman</code> instance every time a <code>Hero</code> is called for.</p>
+
+<p>The previous examples will allow to construct an object when a type hint is specified
+as interface or (abstract) class. This will ensure that constructor dependencies are
+injected automagically. The objects will be autowired together. Sometimes you need to
+specify another type of constructor value though, such as an integer when an ID is
+asked for.</p>
+
+<pre><code>class Catwomen {
+    public function __construct($numberOfLives) {}
+}</code></pre>
+
+<p>If you want to use Catwomen giving her nine lives you can do it with this code:</p>
+
+<pre><code>$fjor-&gt;given('Catwomen')-&gt;constructWith(array(9));</code></pre>
+
+<p><code>ConstructWith</code> takes an array as argument filled with the values that Fjor will
+use upon construction of the object. The keys determine the position of the argument,
+using 0 as first argument. This is also the way to specify which position the value
+should be injected:</p>
+
+<pre><code>class Batman {
+    public function __construct(Sidekick $sidekick, $name) {}
+}
+
+$fjor-&gt;given('Batman')-&gt;constructWith(array(1 =&gt; 'Bruce Wayne'));</code></pre>
+
+<p>Now Fjor will create Batman with 'Bruce Wayne' as second argument value. This works
+also for bindings. Given the same Batman specification as above you can specify that
+<code>Batman</code> needs to be constructed with <code>Robin</code> as sidekick:</p>
+
+<pre><code>class Robin implements Sidekick {}
+
+$fjor-&gt;given('Batman')-&gt;constructWith(array('Robin', 'Bruce Wayne'));</code></pre>
+
+<p>Fjor is smart enough to understand that the first constructor argument for <code>Batman</code>
+needs to be an object of type <code>Sidekick</code>. It will first look at the arguments that
+were specified for construction of the object before it will look at what was specified
+as a general binding.</p>
+
+<p>Not only constructor arguments can be specified. If you need to add values to a given
+method right after creation it's possible to tell Fjor to inject them:</p>
+
+<pre><code>$fjor-&gt;given('Batman')-&gt;andMethod('goGet')-&gt;addParam($joker);</code></pre>
+
+<p>After Fjor has created Batman it will call method <code>goGet</code> with <code>$joker</code> as parameter. As
+with constructors this can be a primitive value or the name of a class Fjor should create
+first and then inject.</p>
+
+<p>Multiple injections in a method are possible:</p>
+
+<pre><code>$fjor-&gt;given('Batman')-&gt;andMethod('goGet')
+    -&gt;addParam($joker)
+    -&gt;addParam($harleyQuinn);</code></pre>
+
+<h2 id="best-practices">Best Practices</h2>
+
+<h3 id="object-graph-construction">Object Graph Construction</h3>
+
+<p>When setting up your project there is a web of objects that collaborate. Often
+the relationships are defined through the constructor. These dependencies are
+what an object needs to fulfill its responsibilities. Upon instantiation of your
+main class these dependencies need to be constructed. Fjor helps in making this
+initial setup easy to manage.</p>
+
+<h3 id="object-factories">Object Factories</h3>
+
+<p>Not all objects are constructed from the beginning. Some objects are only created
+when the need arises or after is determined what specific object will be needed
+to handle a job. Factories are great to encapsulate the creational logic. When
+they know what type of object needs to be created Fjor is there to create it,
+taking responsibility of its creation.</p>
+
+<h3 id="how-not-to-use-fjor">How not to use Fjor</h3>
+
+<p>Generally you should try to avoid depending on Fjor for getting objects instead
+of specifying the service you needed in the first place:</p>
+
+<pre><code>public function login(User $user, Fjor $fjor) {
+    $logger = $fjor-&gt;get('Logger');
+    $logger-&gt;log('trying to log in user ' . $user-&gt;getName());
+}</code></pre>
+
+<p>In the above code we actually don't need Fjor to do what we want. Fjor is added
+as a dependency to give us what we need (the logger). What we should do is
+ask for the logger instead of Fjor:</p>
+
+<pre><code>public function login(User $user, Logger $logger) {
+    $logger-&gt;log('trying to log in user ' . $user-&gt;getName());
+}</code></pre>
+
+</doc>	</div>
+
+	<div id="footer">
+		<div id="site-generator">
+			page generated by <a href="https://github.com/koenhoeymans/Vidola">vidola</a>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
