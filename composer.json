@@ -10,6 +10,10 @@
 	"require": {
 		"php": ">=5.4.6"
 	},
+	"require-dev": {
+		"php": ">=5.4.6",
+        "phpunit/phpunit": "3.7.*"
+    },
 	"autoload": {
 		"psr-0": { "Fjor": "/" }
 	}
