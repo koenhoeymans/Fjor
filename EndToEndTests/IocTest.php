@@ -213,7 +213,7 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @test
 	 */
-	public function objectCanBeSpecifiedGivenForMethodInjection()
+	public function objectCanBeSpecifiedForMethodInjection()
 	{
 		$obj = new \stdClass();
 		$this->ioc
