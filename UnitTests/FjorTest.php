@@ -1,7 +1,8 @@
 <?php
 
-require_once dirname(__FILE__)
-	. DIRECTORY_SEPARATOR . 'TestHelper.php';
+use Fjor\Dsl\Dsl;
+
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestHelper.php';
 
 class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 {
@@ -9,6 +10,25 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 	{
 		$this->factory = $this->getMock('\\Fjor\\ObjectFactory\\ObjectFactory');
 		$this->fjor = new \Fjor\Fjor($this->factory);
+	}
+
+	/**
+	 * @test
+	 */
+	public function utilityConstructorCreatesWithFactoryAndEventDispatcher()
+	{
+		$fjor = \Fjor\Fjor::defaultSetup();
+
+		$eventDispatcher = new \Epa\EventDispatcher();
+		$ioc = new \Fjor\Dsl\PluggableDsl(
+			new \Fjor\ObjectFactory\GenericObjectFactory(),
+			$eventDispatcher
+		);
+		$ioc->given('\\Epa\\EventDispatcher')
+			->thenUse($eventDispatcher);
+		$ioc->addObserver($eventDispatcher);
+
+		$this->assertEquals($fjor, $ioc);
 	}
 
 	/**

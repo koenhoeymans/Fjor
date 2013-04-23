@@ -45,14 +45,12 @@ composer create a `composer.json` file with at least the following:
 Setting up Fjor
 ===============
 
-There's a fluent interface especially created to make working with Fjor easy. To
-set it up you need one dependency being a default factory to create objects. Most of the
-time the generic one that's provided with Fjor will do.
+The default setup for Fjor is simply
 
-	$fjor = new \Fjor\Dsl\Dsl(new \Fjor\ObjectFactory\GenericObjectFactory());
+	$fjor = \Fjor\Fjor::defaultSetup();
 
-The above code will create a new instance of Fjor using a fluent interface. This
-guide will explain how you can use it. This is also the supported API.
+The above code will create a new instance of Fjor using a fluent interface and make
+it easily pluggable.
 
 Getting objects
 ===============

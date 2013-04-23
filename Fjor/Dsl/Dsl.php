@@ -31,7 +31,7 @@ class Dsl extends Fjor implements Given, ThenUse, InSingletonScope, ConstructWit
 	}
 
 	/**
-	 * @return InSingletonScope|void
+	 * @return InSingletonScope|void If object then automatically singleton.
 	 */
 	public function thenUse($classOrInterfaceOrFactoryOrClosure)
 	{
@@ -43,8 +43,6 @@ class Dsl extends Fjor implements Given, ThenUse, InSingletonScope, ConstructWit
 		{
 			return $this;
 		}
-
-		return $this;
 	}
 
 	/**

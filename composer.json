@@ -8,7 +8,8 @@
 		"role": "lead"
 	}],
 	"require": {
-		"php": ">=5.4.6"
+		"php": ">=5.4.6",
+		"epa/epa": "0.1.*"
 	},
 	"require-dev": {
         "phpunit/phpunit": "3.7.*"

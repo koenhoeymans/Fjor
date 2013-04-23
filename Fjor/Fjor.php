@@ -5,6 +5,8 @@
  */
 namespace Fjor;
 
+use Epa\Pluggable;
+use Epa\Observable;
 use Fjor\ObjectFactory\ObjectFactory;
 use Fjor\Injection\InjectionMap;
 
@@ -13,8 +15,10 @@ use Fjor\Injection\InjectionMap;
  * 
  * @package Fjor
  */
-class Fjor
+class Fjor implements Observable
 {
+	use Pluggable;
+
 	private $factory;
 
 	/**
@@ -44,6 +48,23 @@ class Fjor
 	 * @var array
 	 */
 	private $injections = array();
+
+	/**
+	 * Utility method to create an instance of Fjor with the dsl
+	 * and one point access to register plugins.
+	 * 
+	 * @return Fjor
+	 */
+	public static function defaultSetup()
+	{
+		$factory = new \Fjor\ObjectFactory\GenericObjectFactory();
+		$eventDispatcher = new \Epa\EventDispatcher();
+		$fjor = new \Fjor\Dsl\PluggableDsl($factory, $eventDispatcher);
+		$fjor->addObserver($eventDispatcher);
+		$fjor->given('\\Epa\\EventDispatcher')->thenUse($eventDispatcher);
+
+		return $fjor;
+	}
 
 	public function __construct(ObjectFactory $defaultFactory)
 	{
@@ -92,15 +113,19 @@ class Fjor
 
 		if (is_object($singleton))
 		{
-			return $singleton;
+			$obj = $singleton;
 		}
-
-		$obj = $this->getObject($classOrInterface);
-
-		if ($singleton)
+		else
 		{
-			$this->addSingleton($classOrInterface, $obj);
+			$obj = $this->getObject($classOrInterface);
+
+			if ($singleton)
+			{
+				$this->addSingleton($classOrInterface, $obj);
+			}
 		}
+
+		$this->notify(new \Fjor\Events\AfterNew($classOrInterface, $obj));
 
 		return $obj;
 	}
