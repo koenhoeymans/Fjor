@@ -1,6 +1,10 @@
 Fjor Changelog
 ==============
 
+*	0.1.3
+
+	*	Method injection can be specified for parentclasses.
+
 *	0.1.2
 
 	*	More easy to instantiate using utility static method.

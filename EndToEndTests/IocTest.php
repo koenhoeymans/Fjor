@@ -304,10 +304,21 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 
  		$storage = $this->ioc->get('SplObjectStorage');
  
- 		$this->assertEquals(
- 			'foo',
- 			$storage->offsetGet($obj)
- 		);
+ 		$this->assertEquals('foo', $storage->offsetGet($obj));
+ 	}
+ 
+ 	/**
+ 	 * @test
+ 	 */
+ 	public function argumentsCanBeSetForAbstractClassesSoImplementationWillInheritSettings()
+ 	{
+ 		$this->ioc
+	 		->given('\\Fjor\\EndToEndTests\\Support\\AbstractClass')
+	 		->andMethod('set')
+	 		->addParam(array('foo'));
+ 		$obj = $this->ioc->get('\\Fjor\\EndToEndTests\\Support\\ExtendingClass');
+
+ 		$this->assertEquals('foo', $obj->get());
  	}
  
  	/**
@@ -321,8 +332,7 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
  		$this->ioc->given('\\Iterator')->thenUse($class);
  
  		$this->assertSame(
- 			$this->ioc->get('\\ArrayAccess'),
- 			$this->ioc->get('\\Iterator')
+ 			$this->ioc->get('\\ArrayAccess'), $this->ioc->get('\\Iterator')
  		);
  	}
 }

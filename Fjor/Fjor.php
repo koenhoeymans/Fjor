@@ -228,7 +228,28 @@ class Fjor implements Observable
 			$map = $map->combine($this->getInjectionMap($implementation));
 		}
 
+		foreach ($this->getParentClasses($class) as $parentClass)
+		{
+			$parentClass = $this->normalize($parentClass);
+			if (!$this->hasInjectionMap($parentClass))
+			{
+				continue;
+			}
+			$map = $map->combine($this->getInjectionMap($parentClass));
+		}
+
 		return $map;
+	}
+
+	private function getParentClasses($class)
+	{
+		$parentClasses = array();
+		while ($class = get_parent_class($class))
+		{
+			$parentClasses[] = $class;
+		}
+
+		return $parentClasses;
 	}
 
 	private function addSingleton($key, $value)
