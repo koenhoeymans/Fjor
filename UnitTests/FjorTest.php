@@ -179,4 +179,43 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			$this->fjor->get('ArrayAccess')
 		);
 	}
+
+	/**
+	 * @test
+	 */
+	public function throwsEventAfterNewlyCreatedObject()
+	{
+		$this->factory
+			->expects($this->exactly(2))
+			->method('createInstance')
+			->will($this->returnValue(new \SplObjectStorage()));
+		$observer = $this->getMock('Epa\\Observer');
+		$observer->expects($this->exactly(2))
+			->method('notify')
+			->with(new \Fjor\Events\AfterNew('\\SplObjectStorage', new \SplObjectStorage()));
+		$this->fjor->addObserver($observer);
+
+		$this->fjor->get('SplObjectStorage');
+		$this->fjor->get('SplObjectStorage');
+	}
+
+	/**
+	 * @test
+	 */
+	public function singletonThrowsOnlyOneNewlyCreatedEvent()
+	{
+		$this->factory
+			->expects($this->once())
+			->method('createInstance')
+			->will($this->returnValue(new \SplObjectStorage()));
+		$observer = $this->getMock('Epa\\Observer');
+		$observer->expects($this->once())
+			->method('notify')
+			->with(new \Fjor\Events\AfterNew('\\SplObjectStorage', new \SplObjectStorage()));
+		$this->fjor->addObserver($observer);
+		$this->fjor->setSingleton('SplObjectStorage');
+
+		$this->fjor->get('SplObjectStorage');
+		$this->fjor->get('SplObjectStorage');
+	}
 }

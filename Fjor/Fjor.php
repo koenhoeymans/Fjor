@@ -125,8 +125,6 @@ class Fjor implements Observable
 			}
 		}
 
-		$this->notify(new \Fjor\Events\AfterNew($classOrInterface, $obj));
-
 		return $obj;
 	}
 
@@ -160,9 +158,13 @@ class Fjor implements Observable
 			);
 		}
 
-		return $this->getFactory($class)->createInstance(
+		$obj = $this->getFactory($class)->createInstance(
 			$class, $this->getCombinedInjectionMap($class), $this
 		);
+
+		$this->notify(new \Fjor\Events\AfterNew($class, $obj));
+
+		return $obj;
 	}
 
 	private function getInterfaceImplementation($interface)

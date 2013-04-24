@@ -1,6 +1,11 @@
 Fjor Changelog
 ==============
 
+*	0.1.4
+
+	*	Fixed bug where `AfterNew` event is thrown when object is requested
+		but not when object is created.
+
 *	0.1.3
 
 	*	Method injection can be specified for parentclasses.
