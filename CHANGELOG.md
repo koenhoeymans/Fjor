@@ -1,6 +1,10 @@
 Fjor Changelog
 ==============
 
+*	0.1.5
+
+	*	Updated to `Epa` version 0.2.0.
+
 *	0.1.4
 
 	*	Fixed bug where `AfterNew` event is thrown when object is requested

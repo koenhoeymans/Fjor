@@ -13,7 +13,7 @@ use Epa\Plugin;
 /**
  * @package Fjor
  */
-class AfterCreatePlugin extends Plugin
+class AfterCreatePlugin implements Plugin
 {
 	private $called = array();
 
