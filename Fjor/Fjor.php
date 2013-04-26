@@ -53,7 +53,7 @@ class Fjor implements Observable
 	 * Utility method to create an instance of Fjor with the dsl
 	 * and one point access to register plugins.
 	 * 
-	 * @return Fjor
+	 * @return \Fjor\Dsl\PluggableDsl
 	 */
 	public static function defaultSetup()
 	{
