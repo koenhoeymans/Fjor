@@ -6,11 +6,13 @@ Fjor is a library for PHP that makes it easy to handle dependencies. Your applic
 typically is wired together by a web of objects that interact. The construction of
 that web can be handled by Fjor.
 
+
 ----------
 Using Fjor
 ----------
 
 Before you can use Fjor you need to install it and create an instance of Fjor.
+
 
 Installation
 ============
@@ -51,6 +53,7 @@ The default setup for Fjor is simply
 
 The above code will create a new instance of Fjor using a fluent interface and make
 it easily pluggable.
+
 
 Getting objects
 ===============
@@ -187,6 +190,9 @@ Multiple injections in a method are possible:
 	$fjor->given('Batman')->andMethod('goGet')
 		->addParam($joker)
 		->addParam($harleyQuinn);
+
+This will first inject `$joker` and then `$harleyQuinn`.
+
 
 Best Practices
 ==============
