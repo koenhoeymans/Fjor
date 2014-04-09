@@ -22,11 +22,17 @@ class AfterNew implements Event, \Fjor\Api\Events\AfterNew
 		$this->object = $object;
 	}
 
+	/**
+	 * @see \Fjor\Api\Events\AfterNew::getClass()
+	 */
 	public function getClass()
 	{
 		return $this->class;
 	}
 
+	/**
+	 * @see \Fjor\Api\Events\AfterNew::getObject()
+	 */
 	public function getObject()
 	{
 		return $this->object;
