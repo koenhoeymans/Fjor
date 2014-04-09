@@ -6,7 +6,7 @@ class Fjor_EndToEndTests_PluginTest extends PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
-		$this->ioc = \Fjor\Fjor::defaultSetup();
+		$this->ioc = \Fjor\FjorFactory::createDefaultSetup();
 	}
 
 	/**

@@ -15,25 +15,6 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @test
 	 */
-	public function utilityConstructorCreatesWithFactoryAndEventDispatcher()
-	{
-		$fjor = \Fjor\Fjor::defaultSetup();
-
-		$eventDispatcher = new \Epa\EventDispatcher();
-		$ioc = new \Fjor\Dsl\PluggableDsl(
-			new \Fjor\ObjectFactory\GenericObjectFactory(),
-			$eventDispatcher
-		);
-		$ioc->given('\\Epa\\EventDispatcher')
-			->thenUse($eventDispatcher);
-		$ioc->addObserver($eventDispatcher);
-
-		$this->assertEquals($fjor, $ioc);
-	}
-
-	/**
-	 * @test
-	 */
 	public function getsClassInstance()
 	{
 		$this->factory

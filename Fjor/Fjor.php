@@ -1,8 +1,5 @@
 <?php
 
-/**
- * @package Fjor
- */
 namespace Fjor;
 
 use Epa\Pluggable;
@@ -11,9 +8,7 @@ use Fjor\ObjectFactory\ObjectFactory;
 use Fjor\Injection\InjectionMap;
 
 /**
- * A dependency injection system.
- * 
- * @package Fjor
+ * Construct an object graph using dependency injection.
  */
 class Fjor implements Observable
 {
@@ -48,23 +43,6 @@ class Fjor implements Observable
 	 * @var array
 	 */
 	private $injections = array();
-
-	/**
-	 * Utility method to create an instance of Fjor with the dsl
-	 * and one point access to register plugins.
-	 * 
-	 * @return \Fjor\Dsl\PluggableDsl
-	 */
-	public static function defaultSetup()
-	{
-		$factory = new \Fjor\ObjectFactory\GenericObjectFactory();
-		$eventDispatcher = new \Epa\EventDispatcher();
-		$fjor = new \Fjor\Dsl\PluggableDsl($factory, $eventDispatcher);
-		$fjor->addObserver($eventDispatcher);
-		$fjor->given('\\Epa\\EventDispatcher')->thenUse($eventDispatcher);
-
-		return $fjor;
-	}
 
 	public function __construct(ObjectFactory $defaultFactory)
 	{

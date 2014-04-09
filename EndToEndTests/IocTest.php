@@ -6,9 +6,7 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
-		$this->ioc = new \Fjor\Dsl\Dsl(
-			new \Fjor\ObjectFactory\GenericObjectFactory()
-		);
+		$this->ioc = \Fjor\FjorFactory::createDefaultSetup();
 	}
 
 	/**
@@ -92,18 +90,6 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 	public function canUseClassInSingletonScope()
 	{
 		$this->ioc->setSingleton('SplObjectStorage');
-
-		$this->assertSame(
-			$this->ioc->get('SplObjectStorage'), $this->ioc->get('SplObjectStorage')
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function cangivenInterfaceAndClassInSingletonScope()
-	{
-		$this->ioc->given('ArrayAccess')->thenUse('SplObjectStorage')->inSingletonScope();
 
 		$this->assertSame(
 			$this->ioc->get('SplObjectStorage'), $this->ioc->get('SplObjectStorage')

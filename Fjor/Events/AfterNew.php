@@ -10,7 +10,7 @@ use Epa\Event;
 /**
  * @package Fjor
  */
-class AfterNew implements Event
+class AfterNew implements Event, \Fjor\Api\Events\AfterNew
 {
 	private $class;
 
