@@ -2,19 +2,18 @@
 
 namespace Fjor;
 
-use Epa\Pluggable;
-use Epa\Observable;
+use Epa\Api\EventDispatcher;
 use Fjor\ObjectFactory\ObjectFactory;
 use Fjor\Injection\InjectionMap;
 
 /**
  * Construct an object graph using dependency injection.
  */
-class Fjor implements Observable
+class Fjor
 {
-	use Pluggable;
-
 	private $factory;
+
+	private $eventDispatcher;
 
 	/**
 	 * array($name => $instance|true)
@@ -44,9 +43,11 @@ class Fjor implements Observable
 	 */
 	private $injections = array();
 
-	public function __construct(ObjectFactory $defaultFactory)
-	{
+	public function __construct(
+		ObjectFactory $defaultFactory, EventDispatcher $eventDispatcher
+	) {
 		$this->factory = $defaultFactory;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	public function addBinding(
@@ -140,7 +141,7 @@ class Fjor implements Observable
 			$class, $this->getCombinedInjectionMap($class), $this
 		);
 
-		$this->notify(new \Fjor\Events\AfterNew($class, $obj));
+		$this->eventDispatcher->notify(new \Fjor\Events\AfterNew($class, $obj));
 
 		return $obj;
 	}

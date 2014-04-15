@@ -9,13 +9,17 @@ class FjorFactory
 	 * 
 	 * @return \Fjor\Api\ObjectGraphConstructor
 	 */
-	public static function createDefaultSetup()
+	public static function create()
 	{
-		$defaultFactory = new \Fjor\ObjectFactory\GenericObjectFactory();
-		$eventDispatcher = new \Epa\EventDispatcher();
-		$fjor = new \Fjor\FjorDsl($defaultFactory, $eventDispatcher);
-		$fjor->addObserver($eventDispatcher);
+		$eventDispatcher = \Epa\EventDispatcherFactory::create();
+		$fjorDsl = new \Fjor\FjorDsl(
+			new \Fjor\Fjor(
+				new \Fjor\ObjectFactory\GenericObjectFactory(),
+				$eventDispatcher
+			),
+			$eventDispatcher
+		);
 
-		return $fjor;
+		return $fjorDsl;
 	}
 }

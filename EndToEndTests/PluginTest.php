@@ -6,7 +6,7 @@ class Fjor_EndToEndTests_PluginTest extends PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
-		$this->ioc = \Fjor\FjorFactory::createDefaultSetup();
+		$this->ioc = \Fjor\FjorFactory::create();
 	}
 
 	/**
@@ -16,7 +16,7 @@ class Fjor_EndToEndTests_PluginTest extends PHPUnit_Framework_TestCase
 	{
 		$plugin = new \Fjor\EndToEndTests\Support\AfterCreatePlugin();
 
-		$this->ioc->registerPlugin($plugin);
+		$this->ioc->addPlugin($plugin);
 
 		$this->ioc->get('\\stdClass');
 		$this->assertFalse($plugin->wasCalledAfterCreationOf('\\SplObjectStorage'));

@@ -5,7 +5,7 @@
  */
 namespace Fjor\Events;
 
-use Epa\Event;
+use Epa\Api\Event;
 
 /**
  * @package Fjor

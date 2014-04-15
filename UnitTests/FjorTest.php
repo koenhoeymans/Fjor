@@ -9,7 +9,8 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 	public function setup()
 	{
 		$this->factory = $this->getMock('\\Fjor\\ObjectFactory\\ObjectFactory');
-		$this->fjor = new \Fjor\Fjor($this->factory);
+		$this->dispatcher = $this->getMock('\\Epa\\Api\\EventDispatcher');
+		$this->fjor = new \Fjor\Fjor($this->factory, $this->dispatcher);
 	}
 
 	/**
@@ -170,11 +171,9 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->expects($this->exactly(2))
 			->method('createInstance')
 			->will($this->returnValue(new \SplObjectStorage()));
-		$observer = $this->getMock('Epa\\Observer');
-		$observer->expects($this->exactly(2))
+		$this->dispatcher->expects($this->exactly(2))
 			->method('notify')
 			->with(new \Fjor\Events\AfterNew('\\SplObjectStorage', new \SplObjectStorage()));
-		$this->fjor->addObserver($observer);
 
 		$this->fjor->get('SplObjectStorage');
 		$this->fjor->get('SplObjectStorage');
@@ -189,11 +188,9 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->expects($this->once())
 			->method('createInstance')
 			->will($this->returnValue(new \SplObjectStorage()));
-		$observer = $this->getMock('Epa\\Observer');
-		$observer->expects($this->once())
+		$this->dispatcher->expects($this->once())
 			->method('notify')
 			->with(new \Fjor\Events\AfterNew('\\SplObjectStorage', new \SplObjectStorage()));
-		$this->fjor->addObserver($observer);
 		$this->fjor->setSingleton('SplObjectStorage');
 
 		$this->fjor->get('SplObjectStorage');

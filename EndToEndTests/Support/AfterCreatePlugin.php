@@ -5,10 +5,9 @@
  */
 namespace Fjor\EndToEndTests\Support;
 
-use Fjor\Events\AfterNew;
-
-use Epa\EventMapper;
-use Epa\Plugin;
+use Fjor\Api\Events\AfterNew;
+use Epa\Api\EventDispatcher;
+use Epa\Api\Plugin;
 
 /**
  * @package Fjor
@@ -17,11 +16,11 @@ class AfterCreatePlugin implements Plugin
 {
 	private $called = array();
 
-	public function register(EventMapper $mapper)
+	public function registerHandlers(EventDispatcher $dispatcher)
 	{
-		$mapper->registerForEvent(
-			'Fjor\\Events\\AfterNew',
-			function(\Fjor\Events\AfterNew $afterNew)
+		$dispatcher->registerForEvent(
+			'Fjor\\Api\\Events\\AfterNew',
+			function(AfterNew $afterNew)
 			{
 				$this->callMe($afterNew);
 			}

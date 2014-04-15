@@ -8,11 +8,11 @@ namespace Fjor\Api;
 interface ObjectGraphConstructor
 {
 	/**
-	 * @param Plugin $plugin
+	 * @param \Epa\Api\Plugin $plugin
 	 * 
 	 * @return void
 	 */
-	public function registerPlugin(\Epa\Plugin $plugin);
+	public function addPlugin(\Epa\Api\Plugin $plugin);
 
 	/**
 	 * @param string $classOrInterface

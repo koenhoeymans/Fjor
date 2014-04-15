@@ -2,21 +2,20 @@
 
 namespace Fjor;
 
-use Fjor\Fjor;
 use Fjor\Api\ObjectGraphConstructor;
 use Fjor\Api\Dsl\GivenClassOrInterface\ClassOrInterfaceBindings;
 use Fjor\Api\Dsl\GivenClassOrInterface\AndMethod\AddParam;
-use Fjor\ObjectFactory\ObjectFactory;
-use Epa\EventDispatcher;
-use Epa\Plugin;
+use Epa\Api\EventDispatcher;
+use Epa\Api\Plugin;
 
 /**
  * Provides a higher level DSL for Fjor.
  */
 class FjorDsl
-	extends Fjor
 	implements ObjectGraphConstructor, ClassOrInterfaceBindings, AddParam
 {
+	private $fjor;
+
 	private $eventDispatcher;
 
 	private $given;
@@ -25,19 +24,26 @@ class FjorDsl
 
 	private $method;
 
-	public function __construct(
-		ObjectFactory $defaultFactory, EventDispatcher $eventDispatcher
-	) {
+	public function __construct(Fjor $fjor, EventDispatcher $eventDispatcher)
+	{
+		$this->fjor = $fjor;
 		$this->eventDispatcher = $eventDispatcher;
-		parent::__construct($defaultFactory);
 	}
 
 	/**
-	 * @see \Fjor\Api\ObjectConstructor::registerPlugin()
+	 * @see \Fjor\Api\ObjectConstructor::addPlugin()
 	 */
-	public function registerPlugin(Plugin $plugin)
+	public function addPlugin(Plugin $plugin)
 	{
-		$this->eventDispatcher->registerPlugin($plugin);
+		$this->eventDispatcher->addPlugin($plugin);
+	}
+
+	/**
+	 * @see \Fjor\Api\ObjectGraphConstructor::get()
+	 */
+	public function get($classOrInterface)
+	{
+		return $this->fjor->get($classOrInterface);
 	}
 
 	/**
@@ -59,7 +65,7 @@ class FjorDsl
 	{
 		$this->thenUse = $classOrInterfaceOrFactoryOrClosure;
 
-		$this->addBinding($this->given,	$classOrInterfaceOrFactoryOrClosure);
+		$this->fjor->addBinding($this->given,	$classOrInterfaceOrFactoryOrClosure);
 
 		if (!is_object($classOrInterfaceOrFactoryOrClosure))
 		{
@@ -73,7 +79,7 @@ class FjorDsl
 	public function constructWith(array $values)
 	{
 		$target = ($this->thenUse === null) ? $this->given : $this->thenUse;
-		$this->inject($target, '__construct', $values);
+		$this->fjor->inject($target, '__construct', $values);
 	}
 
 	/**
@@ -90,7 +96,15 @@ class FjorDsl
 	 */
 	public function addParam(array $values = array())
 	{
-		$this->inject($this->given, $this->method, $values);
+		$this->fjor->inject($this->given, $this->method, $values);
 		return $this;
+	}
+
+	/**
+	 * @see \Fjor\Api\ObjectGraphConstructor::setSingleton()
+	 */
+	public function setSingleton($classOrInterface)
+	{
+		$this->fjor->setSingleton($classOrInterface);
 	}
 }

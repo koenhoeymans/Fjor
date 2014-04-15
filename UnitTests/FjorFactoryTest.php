@@ -9,13 +9,15 @@ class Fjor_FjorFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function createsDefaultInstance()
 	{
-		$factoryFjor = \Fjor\FjorFactory::createDefaultSetup();
+		$eventDispatcher = \Epa\EventDispatcherFactory::create();
+		$fjorDsl = new \Fjor\FjorDsl(
+			new \Fjor\Fjor(
+				new \Fjor\ObjectFactory\GenericObjectFactory(),
+				$eventDispatcher
+			),
+			$eventDispatcher
+		);
 
-		$defaultFactory = new \Fjor\ObjectFactory\GenericObjectFactory();
-		$eventDispatcher = new \Epa\EventDispatcher();
-		$fjor = new \Fjor\FjorDsl($defaultFactory, $eventDispatcher);
-		$fjor->addObserver($eventDispatcher);
-
-		$this->assertEquals($factoryFjor, $fjor);
+		$this->assertEquals(\Fjor\FjorFactory::create(), $fjorDsl);
 	}
 }
