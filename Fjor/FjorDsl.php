@@ -64,13 +64,7 @@ class FjorDsl
 	public function thenUse($classOrInterfaceOrFactoryOrClosure)
 	{
 		$this->thenUse = $classOrInterfaceOrFactoryOrClosure;
-
-		$this->fjor->addBinding($this->given,	$classOrInterfaceOrFactoryOrClosure);
-
-		if (!is_object($classOrInterfaceOrFactoryOrClosure))
-		{
-			return $this;
-		}
+		$this->fjor->addBinding($this->given, $classOrInterfaceOrFactoryOrClosure);
 	}
 
 	/**
