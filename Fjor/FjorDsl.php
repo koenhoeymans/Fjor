@@ -72,8 +72,7 @@ class FjorDsl
 	 */
 	public function constructWith(array $values)
 	{
-		$target = ($this->thenUse === null) ? $this->given : $this->thenUse;
-		$this->fjor->inject($target, '__construct', $values);
+		$this->fjor->inject($this->given, '__construct', $values);
 	}
 
 	/**
