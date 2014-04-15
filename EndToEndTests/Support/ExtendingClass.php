@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @package Fjor
- */
 namespace Fjor\EndToEndTests\Support;
 
-/**
- * @package Fjor
- */
 class ExtendingClass extends AbstractClass
 {
 	private $value;

@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @package Fjor
- */
 namespace Fjor\Api\Dsl\GivenClassOrInterface;
 
-/**
- * @package Fjor
- */
 interface ConstructWith
 {
 	/**

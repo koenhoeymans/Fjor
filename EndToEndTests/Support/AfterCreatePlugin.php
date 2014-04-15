@@ -1,17 +1,11 @@
 <?php
 
-/**
- * @package Fjor
- */
 namespace Fjor\EndToEndTests\Support;
 
 use Fjor\Api\Events\AfterNew;
 use Epa\Api\EventDispatcher;
 use Epa\Api\Plugin;
 
-/**
- * @package Fjor
- */
 class AfterCreatePlugin implements Plugin
 {
 	private $called = array();

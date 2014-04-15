@@ -1,16 +1,10 @@
 <?php
 
-/**
- * @package Fjor
- */
 namespace Fjor\ObjectFactory;
 
 Use Fjor\Fjor;
 Use Fjor\Injection\InjectionMap;
 
-/** 
- * @package Fjor
- */
 class GenericObjectFactory implements ObjectFactory
 {
 	public function createInstance($class, InjectionMap $injections, Fjor $ioc)

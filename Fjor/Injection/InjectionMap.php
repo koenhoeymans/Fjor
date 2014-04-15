@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @package Fjor
- */
 namespace Fjor\Injection;
 
-/**
- * @package Fjor
- */
 class InjectionMap
 {
 	/**
@@ -32,6 +26,7 @@ class InjectionMap
 
 	/**
 	 * @param string $method
+	 * 
 	 * @return array An array of arrays with parameters.
 	 */
 	public function getParams($method)
@@ -57,6 +52,7 @@ class InjectionMap
 	 * Adds injections from a map to this one and returns a new combined one.
 	 * 
 	 * @param InjectionMap $map
+	 * 
 	 * @return InjectionMap A new InjectionMap.
 	 */
 	public function combine(InjectionMap $map)

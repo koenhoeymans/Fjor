@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Loads the files for the library.
- */
 function Fjor_Autoload($className)
 {
 	$classNameFile = __DIR__
