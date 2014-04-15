@@ -6,6 +6,7 @@ interface ThenUse
 {
 	/**
 	 * @param mixed $classOrInterfaceOrFactoryOrClosure
+	 * 
 	 * @return void
 	 */
 	public function thenUse($classOrInterfaceOrFactoryOrClosure);
