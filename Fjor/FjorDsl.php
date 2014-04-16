@@ -20,8 +20,6 @@ class FjorDsl
 
 	private $given;
 
-	private $thenUse;
-
 	private $method;
 
 	public function __construct(Fjor $fjor, EventDispatcher $eventDispatcher)
@@ -52,7 +50,6 @@ class FjorDsl
 	public function given($classOrInterface)
 	{
 		$this->given = $classOrInterface;
-		$this->thenUse = null;
 		$this->method = null;
 
 		return $this;
@@ -63,7 +60,6 @@ class FjorDsl
 	 */
 	public function thenUse($classOrInterfaceOrFactoryOrClosure)
 	{
-		$this->thenUse = $classOrInterfaceOrFactoryOrClosure;
 		$this->fjor->addBinding($this->given, $classOrInterfaceOrFactoryOrClosure);
 	}
 
