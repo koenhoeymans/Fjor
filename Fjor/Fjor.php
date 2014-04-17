@@ -50,6 +50,17 @@ class Fjor
 		$this->eventDispatcher = $eventDispatcher;
 	}
 
+	/**
+	 * Specifies wich class or instance should be used when an interface or
+	 * class is encountered. Optionally a factory can be specified that will
+	 * create an instance.
+	 * 
+	 * @param string $interfaceOrClass
+	 * @param mixed $toClassOrInstance
+	 * @param ObjectFactory $factory
+	 * 
+	 * @return void
+	 */
 	public function addBinding(
 		$interfaceOrClass, $toClassOrInstance, ObjectFactory $factory = null
 	) {
@@ -70,12 +81,28 @@ class Fjor
 		}
 	}
 
+	/**
+	 * Set an interface or class as singleton. The same object will be used
+	 * every time the interface or class is encountered.
+	 * 
+	 * @param string $interfaceOrClass
+	 * 
+	 * @return void
+	 */
 	public function setSingleton($interfaceOrClass)
 	{
 		$interfaceOrClass = $this->normalize($interfaceOrClass);
 		$this->addSingleton($interfaceOrClass, true);
 	}
 
+	/**
+	 * Return the factory for creating an instance of the class or null
+	 * if there is none.
+	 * 
+	 * @param string $class
+	 * 
+	 * @return mixed|null
+	 */
 	public function getFactory($class)
 	{
 		$class = $this->normalize($class);
@@ -84,6 +111,13 @@ class Fjor
 			null;
 	}
 
+	/**
+	 * Get an instance of a class or interface.
+	 * 
+	 * @param string $classOrInterface
+	 * 
+	 * @return mixed
+	 */
 	public function get($classOrInterface)
 	{
 		$classOrInterface = $this->normalize($classOrInterface);
@@ -168,6 +202,8 @@ class Fjor
 	 * @param array $values
 	 * @param string $method
 	 * @param string $className
+	 * 
+	 * @return void
 	 */
 	public function inject($class, $method, array $values)
 	{
