@@ -185,11 +185,6 @@ class Fjor
 		$this->injections[$class] = new InjectionMap();
 	}
 
-	private function hasInjectionMap($class)
-	{
-		return isset($this->injections[$class]);
-	}
-
 	private function getInjectionMap($class)
 	{
 		if (!isset($this->injections[$class]))
@@ -202,27 +197,13 @@ class Fjor
 
 	private function getCombinedInjectionMap($class)
 	{
-		$map = $this->getInjectionMap($class);
+		$implements = class_implements($class);
+		$parents = $this->getParentClasses($class);
 
-		foreach (class_implements($class) as $implementation)
-		{
-			if (!$this->hasInjectionMap($implementation))
-			{
-				continue;
-			}
-			$map = $map->combine($this->getInjectionMap($implementation));
-		}
-
-		foreach ($this->getParentClasses($class) as $parentClass)
-		{
-			if (!$this->hasInjectionMap($parentClass))
-			{
-				continue;
-			}
-			$map = $map->combine($this->getInjectionMap($parentClass));
-		}
-
-		return $map;
+		$maps = $this->getInjectionMapsForAll(array_merge($implements, $parents));
+		$maps[] = $this->getInjectionMap($class);
+ 
+		return $this->combineInjectionMaps($maps);
 	}
 
 	private function getParentClasses($class)
@@ -234,6 +215,32 @@ class Fjor
 		}
 
 		return $parentClasses;
+	}
+
+	private function getInjectionMapsForAll(array $classesAndInterfaces)
+	{
+		$maps = array();
+		foreach ($classesAndInterfaces as $classOrInterface)
+		{
+			$map = $this->getInjectionMap($classOrInterface);
+			if ($map)
+			{
+				$maps[] = $map;
+			}
+		}
+
+		return $maps;
+	}
+
+	private function combineInjectionMaps(array $maps)
+	{
+		$newMap = array_shift($maps);
+		foreach ($maps as $map)
+		{
+			$newMap = $map->combine($newMap);
+		}
+
+		return $newMap;
 	}
 
 	private function addToListOfSingletons($classOrInterface)
