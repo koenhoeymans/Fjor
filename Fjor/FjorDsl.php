@@ -41,7 +41,7 @@ class FjorDsl
 	 */
 	public function get($classOrInterface)
 	{
-		return $this->fjor->get($classOrInterface);
+		return $this->fjor->getInstance($classOrInterface);
 	}
 
 	/**

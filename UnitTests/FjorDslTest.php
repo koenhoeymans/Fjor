@@ -34,7 +34,7 @@ class Fjor_FjorDslTest extends PHPUnit_Framework_TestCase
 	{
 		$this->fjor
 			->expects($this->once())
-			->method('get')
+			->method('getInstance')
 			->with('SplSubject');
 
 		$this->dsl->get('SplSubject');

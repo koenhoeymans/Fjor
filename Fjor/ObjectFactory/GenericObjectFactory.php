@@ -113,7 +113,7 @@ class GenericObjectFactory implements ObjectFactory
 			### as binding
 			if (is_string($value))
 			{
-				$paramObj = $ioc->get($value);
+				$paramObj = $ioc->getInstance($value);
 			}
 			### or object
 			else
@@ -125,7 +125,7 @@ class GenericObjectFactory implements ObjectFactory
 		else
 		{
 			$paramClassName = $paramReflectionClass->getName();
-			$paramObj = $ioc->get($paramClassName);
+			$paramObj = $ioc->getInstance($paramClassName);
 		}
 
 		return $paramObj;

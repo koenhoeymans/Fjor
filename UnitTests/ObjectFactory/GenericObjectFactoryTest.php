@@ -71,7 +71,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 
 		$this->fjor
 			->expects($this->once())
-			->method('get')
+			->method('getInstance')
 			->with('\\SplObjectStorage')
 			->will($this->returnValue(new \SplObjectStorage));
 
@@ -94,7 +94,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 
 		$this->fjor
 			->expects($this->never())
-			->method('get');
+			->method('getInstance');
 
 		$this->assertEquals(
 			new $class(new \SplObjectStorage()),
@@ -115,7 +115,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 		
 		$this->fjor
 			->expects($this->once())
-			->method('get')
+			->method('getInstance')
 			->with('StdClass')
 			->will($this->returnValue(new \StdClass()));
 

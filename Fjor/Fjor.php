@@ -94,7 +94,7 @@ class Fjor
 	 * 
 	 * @return mixed
 	 */
-	public function get($classOrInterface)
+	public function getInstance($classOrInterface)
 	{
 		$classOrInterface = $this->normalize($classOrInterface);
 
@@ -156,7 +156,7 @@ class Fjor
 			throw new \Exception('No binding specified for ' . $interface);
 		}
 
-		return $this->get($this->bindings[$interface]);
+		return $this->getInstance($this->bindings[$interface]);
 	}
 
 	private function normalize($name)
