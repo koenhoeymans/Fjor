@@ -8,14 +8,7 @@ Use Fjor\Injection\InjectionMap;
 class GenericObjectFactory implements ObjectFactory
 {
 	public function createInstance($class, InjectionMap $injections, Fjor $ioc)
-	{
-		## first check if any binding for the object exists
-		$factory = $ioc->getFactory($class);
-		if ($factory && ($factory !== $this))
-		{
-			return $factory->createInstance($ioc);
-		}
-	
+	{	
 		## we'll have to create a new instance
 		$reflectionClass = new \ReflectionClass($class);
 	

@@ -28,8 +28,7 @@ class Fjor
 
 	/**
 	 * array('class/interface' => array(
-	 * 			'to'		=> $class,
-	 * 			'factory'	=> $factory
+	 * 		'to'		=> $class
 	 * ));
 	 * 
 	 * @var array
@@ -44,26 +43,23 @@ class Fjor
 	private $injections = array();
 
 	public function __construct(
-		ObjectFactory $defaultFactory, EventDispatcher $eventDispatcher
+		ObjectFactory $factory, EventDispatcher $eventDispatcher
 	) {
-		$this->factory = $defaultFactory;
+		$this->factory = $factory;
 		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
 	 * Specifies wich class or instance should be used when an interface or
-	 * class is encountered. Optionally a factory can be specified that will
-	 * create an instance.
+	 * class is encountered.
 	 * 
 	 * @param string $interfaceOrClass
 	 * @param mixed $toClassOrInstance
-	 * @param ObjectFactory $factory
 	 * 
 	 * @return void
 	 */
-	public function addBinding(
-		$interfaceOrClass, $toClassOrInstance, ObjectFactory $factory = null
-	) {
+	public function addBinding($interfaceOrClass, $toClassOrInstance)
+	{
 		$name = $this->normalize($interfaceOrClass);
 
 		if (is_object($toClassOrInstance))
@@ -73,10 +69,8 @@ class Fjor
 		else
 		{
 			$toClassOrInstance = $this->normalize($toClassOrInstance);
-			$factory = $factory ?: $this->factory;
 			$this->bindings[$name] = array(
-				'to' => $toClassOrInstance,
-				'factory' => $factory
+				'to' => $toClassOrInstance
 			);
 		}
 	}
@@ -93,22 +87,6 @@ class Fjor
 	{
 		$interfaceOrClass = $this->normalize($interfaceOrClass);
 		$this->addSingleton($interfaceOrClass, true);
-	}
-
-	/**
-	 * Return the factory for creating an instance of the class or null
-	 * if there is none.
-	 * 
-	 * @param string $class
-	 * 
-	 * @return mixed|null
-	 */
-	public function getFactory($class)
-	{
-		$class = $this->normalize($class);
-		return (isset($this->bindings[$class])) ?
-			$this->bindings[$class]['factory'] :
-			null;
 	}
 
 	/**
@@ -166,12 +144,11 @@ class Fjor
 		if (!isset($this->bindings[$class]))
 		{
 			$this->bindings[$class] = array(
-				'to' => $class,
-				'factory' => $this->factory
+				'to' => $class
 			);
 		}
 
-		$obj = $this->getFactory($class)->createInstance(
+		$obj = $this->factory->createInstance(
 			$class, $this->getCombinedInjectionMap($class), $this
 		);
 
