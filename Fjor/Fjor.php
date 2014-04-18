@@ -198,23 +198,12 @@ class Fjor
 	private function getCombinedInjectionMap($class)
 	{
 		$implements = class_implements($class);
-		$parents = $this->getParentClasses($class);
+		$parents = class_parents($class);
 
 		$maps = $this->getInjectionMapsForAll(array_merge($implements, $parents));
 		$maps[] = $this->getInjectionMap($class);
  
 		return $this->combineInjectionMaps($maps);
-	}
-
-	private function getParentClasses($class)
-	{
-		$parentClasses = array();
-		while ($class = get_parent_class($class))
-		{
-			$parentClasses[] = $class;
-		}
-
-		return $parentClasses;
 	}
 
 	private function getInjectionMapsForAll(array $classesAndInterfaces)
