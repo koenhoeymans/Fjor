@@ -109,6 +109,19 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @test
 	 */
+	public function throwsExceptionWhenNoBindingForInterface()
+	{
+		try {
+			$this->fjor->get('\\SplSubject');
+			$this->fail();
+		}
+		catch (Exception $e)
+		{}
+	}
+
+	/**
+	 * @test
+	 */
 	public function implementingClassesCanBeSpecified()
 	{
 		$this->factory
@@ -195,5 +208,24 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 
 		$this->fjor->get('SplObjectStorage');
 		$this->fjor->get('SplObjectStorage');
+	}
+
+	/**
+	 * @test
+	 */
+	public function canSpecifyValuesForMethodToBeInjected()
+	{
+		$obj = new \Fjor\UnitTests\Support\ClassWithMethodDependency();
+		$obj->set(new \stdClass());
+
+		$this->factory
+			->expects($this->once())
+			->method('createInstance')
+			->with('\\Fjor\\UnitTests\\Support\\ClassWithMethodDependency',
+				   new \Fjor\Injection\InjectionMap('a'),
+				   $this->fjor)
+			->will($this->returnValue($obj));
+
+		$this->assertEquals($obj, $this->fjor->get('\\Fjor\\UnitTests\\Support\\ClassWithMethodDependency'));
 	}
 }
