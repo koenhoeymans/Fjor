@@ -218,13 +218,22 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 		$obj = new \Fjor\UnitTests\Support\ClassWithMethodDependency();
 		$obj->set(new \stdClass());
 
+		$injectionMap = new \Fjor\Injection\InjectionMap();
+		$injectionMap->add('set', array(new \stdClass()));
+
 		$this->factory
 			->expects($this->once())
 			->method('createInstance')
 			->with('Fjor\\UnitTests\\Support\\ClassWithMethodDependency',
-				   new \Fjor\Injection\InjectionMap(),
+				   $injectionMap,
 				   $this->fjor)
 			->will($this->returnValue($obj));
+
+		$this->fjor->inject(
+			'Fjor\\UnitTests\\Support\\ClassWithMethodDependency',
+			'set',
+			array(new \stdClass())
+		);
 
 		$this->assertEquals(
 			$obj,
