@@ -16,15 +16,18 @@ class Fjor
 	private $eventDispatcher;
 
 	/**
-	 * array($name => $instance|true)
-	 * 
-	 * `$instance` is an object if one already created, `true`
-	 * when the bound class or interface should be a singletone but
-	 * no implementation is created yet
+	 * A list of interfaces or classes that should be singletons.
 	 * 
 	 * @var array
 	 */
-	private $singleton = array();
+	private $singletons = array();
+
+	/**
+	 * array('interface|class' => $instance')
+	 * 
+	 * @var array
+	 */
+	private $instances = array();
 
 	/**
 	 * array('class/interface' => $class);
@@ -51,23 +54,23 @@ class Fjor
 	 * Specifies wich class or instance should be used when an interface or
 	 * class is encountered.
 	 * 
-	 * @param string $interfaceOrClass
+	 * @param string $classOrInterface
 	 * @param mixed $toClassOrInstance
 	 * 
 	 * @return void
 	 */
-	public function addBinding($interfaceOrClass, $toClassOrInstance)
+	public function addBinding($classOrInterface, $toClassOrInstance)
 	{
-		$name = $this->normalize($interfaceOrClass);
+		$classOrInterface = $this->normalize($classOrInterface);
 
 		if (is_object($toClassOrInstance))
 		{
-			$this->addSingleton($name, $toClassOrInstance);
+			$this->addSingletonInstance($classOrInterface, $toClassOrInstance);
 		}
 		else
 		{
 			$toClassOrInstance = $this->normalize($toClassOrInstance);
-			$this->bindings[$name] = $toClassOrInstance;
+			$this->bindings[$classOrInterface] = $toClassOrInstance;
 		}
 	}
 
@@ -75,14 +78,13 @@ class Fjor
 	 * Set an interface or class as singleton. The same object will be used
 	 * every time the interface or class is encountered.
 	 * 
-	 * @param string $interfaceOrClass
+	 * @param string $classOrInterface
 	 * 
 	 * @return void
 	 */
-	public function setSingleton($interfaceOrClass)
+	public function setSingleton($classOrInterface)
 	{
-		$interfaceOrClass = $this->normalize($interfaceOrClass);
-		$this->addSingleton($interfaceOrClass, true);
+		$this->addToListOfSingletons($this->normalize($classOrInterface));
 	}
 
 	/**
@@ -96,20 +98,16 @@ class Fjor
 	{
 		$classOrInterface = $this->normalize($classOrInterface);
 
-		$singleton = $this->getSingleton($classOrInterface);
+		$obj = $this->getSingletonInstance($classOrInterface);
 
-		if (is_object($singleton))
-		{
-			$obj = $singleton;
-		}
-		else
+		if (!$obj)
 		{
 			$obj = $this->getObject($classOrInterface);
+		}
 
-			if ($singleton)
-			{
-				$this->addSingleton($classOrInterface, $obj);
-			}
+		if ($this->isSingleton($classOrInterface))
+		{
+			$this->addSingletonInstance($classOrInterface, $obj);
 		}
 
 		return $obj;
@@ -240,13 +238,29 @@ class Fjor
 		return $parentClasses;
 	}
 
-	private function addSingleton($key, $value)
+	private function addToListOfSingletons($classOrInterface)
 	{
-		$this->singleton[$key] = $value;
+		if (!in_array($classOrInterface, $this->singletons))
+		{
+			$this->singletons[$classOrInterface] = $classOrInterface;
+		}
 	}
 
-	private function getSingleton($key)
+	private function isSingleton($classOrInterface)
 	{
-		return isset($this->singleton[$key]) ? $this->singleton[$key] : null;
+		return in_array($classOrInterface, $this->singletons);
+	}
+
+	private function getSingletonInstance($classOrInterface)
+	{
+		if (isset($this->instances[$classOrInterface]))
+		{
+			return $this->instances[$classOrInterface];
+		}
+	}
+
+	private function addSingletonInstance($classOrInterface, $instance)
+	{
+		$this->instances[$classOrInterface] = $instance;
 	}
 }
