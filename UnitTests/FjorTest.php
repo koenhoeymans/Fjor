@@ -222,7 +222,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->expects($this->once())
 			->method('createInstance')
 			->with('Fjor\\UnitTests\\Support\\ClassWithMethodDependency',
-				   new \Fjor\Injection\InjectionMap('a'),
+				   new \Fjor\Injection\InjectionMap(),
 				   $this->fjor)
 			->will($this->returnValue($obj));
 
