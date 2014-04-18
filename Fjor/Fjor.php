@@ -215,7 +215,6 @@ class Fjor
 
 		foreach ($this->getParentClasses($class) as $parentClass)
 		{
-			$parentClass = $this->normalize($parentClass);
 			if (!$this->hasInjectionMap($parentClass))
 			{
 				continue;
