@@ -27,9 +27,7 @@ class Fjor
 	private $singleton = array();
 
 	/**
-	 * array('class/interface' => array(
-	 * 		'to'		=> $class
-	 * ));
+	 * array('class/interface' => $class);
 	 * 
 	 * @var array
 	 */
@@ -69,9 +67,7 @@ class Fjor
 		else
 		{
 			$toClassOrInstance = $this->normalize($toClassOrInstance);
-			$this->bindings[$name] = array(
-				'to' => $toClassOrInstance
-			);
+			$this->bindings[$name] = $toClassOrInstance;
 		}
 	}
 
@@ -143,9 +139,7 @@ class Fjor
 	{
 		if (!isset($this->bindings[$class]))
 		{
-			$this->bindings[$class] = array(
-				'to' => $class
-			);
+			$this->bindings[$class] = $class;
 		}
 
 		$obj = $this->factory->createInstance(
@@ -164,7 +158,7 @@ class Fjor
 			throw new \Exception('No binding specified for ' . $interface);
 		}
 
-		return $this->get($this->bindings[$interface]['to']);
+		return $this->get($this->bindings[$interface]);
 	}
 
 	private function normalize($name)
