@@ -102,7 +102,7 @@ class Fjor
 
 		if (!$obj)
 		{
-			$obj = $this->getObject($classOrInterface);
+			$obj = $this->createObject($classOrInterface);
 		}
 
 		if ($this->isSingleton($classOrInterface))
@@ -113,7 +113,7 @@ class Fjor
 		return $obj;
 	}
 
-	private function getObject($classOrInterface)
+	private function createObject($classOrInterface)
 	{
 		if (class_exists($classOrInterface))
 		{
