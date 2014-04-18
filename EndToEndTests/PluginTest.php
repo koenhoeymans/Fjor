@@ -18,10 +18,10 @@ class Fjor_EndToEndTests_PluginTest extends PHPUnit_Framework_TestCase
 
 		$this->ioc->addPlugin($plugin);
 
-		$this->ioc->get('\\stdClass');
-		$this->assertFalse($plugin->wasCalledAfterCreationOf('\\SplObjectStorage'));
+		$this->ioc->get('stdClass');
+		$this->assertFalse($plugin->wasCalledAfterCreationOf('SplObjectStorage'));
 
-		$this->ioc->get('\\SplObjectStorage');
-		$this->assertTrue($plugin->wasCalledAfterCreationOf('\\SplObjectStorage'));
+		$this->ioc->get('SplObjectStorage');
+		$this->assertTrue($plugin->wasCalledAfterCreationOf('SplObjectStorage'));
 	}
 }

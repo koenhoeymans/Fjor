@@ -161,7 +161,7 @@ class Fjor
 
 	private function normalize($name)
 	{
-		return ($name[0] === '\\') ? $name : '\\' . $name;
+		return ($name[0] === '\\') ? substr($name, 1) : $name;
 	}
 
 	/**
@@ -206,7 +206,6 @@ class Fjor
 
 		foreach (class_implements($class) as $implementation)
 		{
-			$implementation = $this->normalize($implementation);
 			if (!$this->hasInjectionMap($implementation))
 			{
 				continue;

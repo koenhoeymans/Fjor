@@ -90,7 +90,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->expects($this->atLeastOnce())
 			->method('createInstance')
 			->with(
-				'\\Fjor\\EndToEndTests\\Support\\ClassWithDependency',
+				'Fjor\\EndToEndTests\\Support\\ClassWithDependency',
 				new \Fjor\Injection\InjectionMap(),
 				$this->fjor
 			)
@@ -98,7 +98,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 				new \Fjor\EndToEndTests\Support\ClassWithOptionalDependency())
 			);
 		
-		$obj = $this->fjor->getInstance('\\Fjor\\EndToEndTests\\Support\\ClassWithDependency');
+		$obj = $this->fjor->getInstance('Fjor\\EndToEndTests\\Support\\ClassWithDependency');
 		
 		$this->assertEquals(
 			$obj,
@@ -186,7 +186,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->will($this->returnValue(new \SplObjectStorage()));
 		$this->dispatcher->expects($this->exactly(2))
 			->method('notify')
-			->with(new \Fjor\Events\AfterNew('\\SplObjectStorage', new \SplObjectStorage()));
+			->with(new \Fjor\Events\AfterNew('SplObjectStorage', new \SplObjectStorage()));
 
 		$this->fjor->getInstance('SplObjectStorage');
 		$this->fjor->getInstance('SplObjectStorage');
@@ -203,7 +203,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->will($this->returnValue(new \SplObjectStorage()));
 		$this->dispatcher->expects($this->once())
 			->method('notify')
-			->with(new \Fjor\Events\AfterNew('\\SplObjectStorage', new \SplObjectStorage()));
+			->with(new \Fjor\Events\AfterNew('SplObjectStorage', new \SplObjectStorage()));
 		$this->fjor->setSingleton('SplObjectStorage');
 
 		$this->fjor->getInstance('SplObjectStorage');
@@ -221,7 +221,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 		$this->factory
 			->expects($this->once())
 			->method('createInstance')
-			->with('\\Fjor\\UnitTests\\Support\\ClassWithMethodDependency',
+			->with('Fjor\\UnitTests\\Support\\ClassWithMethodDependency',
 				   new \Fjor\Injection\InjectionMap('a'),
 				   $this->fjor)
 			->will($this->returnValue($obj));
