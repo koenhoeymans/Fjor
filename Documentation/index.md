@@ -43,16 +43,18 @@ composer create a `composer.json` file with at least the following:
 		}
 	}
 
+You can change ask the most current version or a previous version.
+
 
 Setting up Fjor
 ===============
 
 The default setup for Fjor is simply
 
-	$fjor = \Fjor\Fjor::defaultSetup();
+	$fjor = \Fjor\FjorFactory::create();
 
-The above code will create a new instance of Fjor using a fluent interface and make
-it easily pluggable.
+This will return the interface `Fjor\Api\ObjectGraphConstructor`. All public API
+is in the `Fjor\Api` folder.
 
 
 Getting objects
@@ -179,7 +181,7 @@ as a general binding.
 Not only constructor arguments can be specified. If you need to add values to a given
 method right after creation it's possible to tell Fjor to inject them:
 
-	$fjor->given('Batman')->andMethod('goGet')->addParam($joker);
+	$fjor->given('Batman')->andMethod('goGet')->addParam(array($joker));
 
 After Fjor has created Batman it will call method `goGet` with `$joker` as parameter. As
 with constructors this can be a primitive value or the name of a class Fjor should create
@@ -188,8 +190,8 @@ first and then inject.
 Multiple injections in a method are possible:
 
 	$fjor->given('Batman')->andMethod('goGet')
-		->addParam($joker)
-		->addParam($harleyQuinn);
+		->addParam(array($joker))
+		->addParam(array($harleyQuinn));
 
 This will first inject `$joker` and then `$harleyQuinn`.
 
