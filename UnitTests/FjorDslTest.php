@@ -6,11 +6,11 @@ class Fjor_FjorDslTest extends PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{
-		$this->fjor = $this->getMockBuilder('\\Fjor\\Fjor')
+		$this->ogc = $this->getMockBuilder('\\Fjor\\ObjectGraphConstructor')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->eventDispatcher = $this->getMock('\\Epa\\Api\\EventDispatcher');
-		$this->dsl = new \Fjor\FjorDsl($this->fjor, $this->eventDispatcher);
+		$this->dsl = new \Fjor\FjorDsl($this->ogc, $this->eventDispatcher);
 	}
 
 	/**
@@ -32,7 +32,7 @@ class Fjor_FjorDslTest extends PHPUnit_Framework_TestCase
 	 */
 	public function getsObjectFromFjor()
 	{
-		$this->fjor
+		$this->ogc
 			->expects($this->once())
 			->method('getInstance')
 			->with('SplSubject');
@@ -45,7 +45,7 @@ class Fjor_FjorDslTest extends PHPUnit_Framework_TestCase
 	 */
 	public function providesGivenThenUseForBindingInterfacesToClasses()
 	{
-		$this->fjor
+		$this->ogc
 			->expects($this->once())
 			->method('addBinding')
 			->with('Foo', 'Bar');
@@ -58,7 +58,7 @@ class Fjor_FjorDslTest extends PHPUnit_Framework_TestCase
 	 */
 	public function providesDslForSpecifyingConstructorValues()
 	{
-		$this->fjor
+		$this->ogc
 			->expects($this->once())
 			->method('inject')
 			->with('Foo', '__construct', array('value'));
@@ -71,7 +71,7 @@ class Fjor_FjorDslTest extends PHPUnit_Framework_TestCase
 	 */
 	public function providesDslForSpecifyingMethodValues()
 	{
-		$this->fjor
+		$this->ogc
 			->expects($this->once())
 			->method('inject')
 			->with('Foo', 'doX', array('value'));
@@ -84,7 +84,7 @@ class Fjor_FjorDslTest extends PHPUnit_Framework_TestCase
 	 */
 	public function setsSingleton()
 	{
-		$this->fjor
+		$this->ogc
 			->expects($this->once())
 			->method('setSingleton')
 			->with('Foo');

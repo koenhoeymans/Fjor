@@ -2,12 +2,12 @@
 
 namespace Fjor\ObjectFactory;
 
-Use Fjor\Fjor;
+Use Fjor\ObjectGraphConstructor;
 Use Fjor\Injection\InjectionMap;
 
 class GenericObjectFactory implements ObjectFactory
 {
-	public function createInstance($class, InjectionMap $injections, Fjor $ioc)
+	public function createInstance($class, InjectionMap $injections, ObjectGraphConstructor $ogc)
 	{	
 		## we'll have to create a new instance
 		$reflectionClass = new \ReflectionClass($class);
@@ -22,7 +22,7 @@ class GenericObjectFactory implements ObjectFactory
 			$params = $this->findMissingDependencies(
 				$params[0],
 				$reflectionClass->getMethod('__construct'),
-				$ioc
+				$ogc
 			);
 
 			$obj = $reflectionClass->newInstanceArgs($params);
@@ -39,7 +39,7 @@ class GenericObjectFactory implements ObjectFactory
 			foreach ($injections->getParams($method) as $params)
 			{
 				$params = $this->findMissingDependencies(
-					$params, $reflectionMethod, $ioc
+					$params, $reflectionMethod, $ogc
 				);
 				call_user_func_array(array($obj, $method), $params);
 			}
@@ -49,7 +49,7 @@ class GenericObjectFactory implements ObjectFactory
 	}
 
 	private function findMissingDependencies(
-		array $params, \ReflectionMethod $reflectionMethod, Fjor $ioc
+		array $params, \ReflectionMethod $reflectionMethod, ObjectGraphConstructor $ogc
 	) {
 		foreach ($reflectionMethod->getParameters() as $reflectionParameter)
 		{
@@ -61,7 +61,7 @@ class GenericObjectFactory implements ObjectFactory
 			# an object needed
 			if ($paramReflectionClass)
 			{
-				$paramObj = $this->getObject($value, $paramReflectionClass, $ioc);
+				$paramObj = $this->getObject($value, $paramReflectionClass, $ogc);
 			}
 			# something else needed and it's specified
 			elseif (isset($value))
@@ -105,15 +105,16 @@ class GenericObjectFactory implements ObjectFactory
 		return $params;
 	}
 
-	private function getObject($value, \ReflectionClass $paramReflectionClass, Fjor $ioc)
-	{
+	private function getObject(
+		$value, \ReflectionClass $paramReflectionClass, ObjectGraphConstructor $ogc
+	) {
 		## provided by user
 		if ($value)
 		{
 			### as binding
 			if (is_string($value))
 			{
-				$paramObj = $ioc->getInstance($value);
+				$paramObj = $ogc->getInstance($value);
 			}
 			### or object
 			else
@@ -125,7 +126,7 @@ class GenericObjectFactory implements ObjectFactory
 		else
 		{
 			$paramClassName = $paramReflectionClass->getName();
-			$paramObj = $ioc->getInstance($paramClassName);
+			$paramObj = $ogc->getInstance($paramClassName);
 		}
 
 		return $paramObj;

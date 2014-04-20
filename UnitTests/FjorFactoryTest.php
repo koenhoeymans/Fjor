@@ -11,7 +11,7 @@ class Fjor_FjorFactoryTest extends PHPUnit_Framework_TestCase
 	{
 		$eventDispatcher = \Epa\EventDispatcherFactory::create();
 		$fjorDsl = new \Fjor\FjorDsl(
-			new \Fjor\Fjor(
+			new \Fjor\ObjectGraphConstructor(
 				new \Fjor\ObjectFactory\GenericObjectFactory(),
 				$eventDispatcher
 			),

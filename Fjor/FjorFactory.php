@@ -13,7 +13,7 @@ class FjorFactory
 	{
 		$eventDispatcher = \Epa\EventDispatcherFactory::create();
 		$fjorDsl = new \Fjor\FjorDsl(
-			new \Fjor\Fjor(
+			new \Fjor\ObjectGraphConstructor(
 				new \Fjor\ObjectFactory\GenericObjectFactory(),
 				$eventDispatcher
 			),

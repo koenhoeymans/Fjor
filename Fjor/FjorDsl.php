@@ -2,7 +2,7 @@
 
 namespace Fjor;
 
-use Fjor\Api\ObjectGraphConstructor;
+use Fjor\Api\ObjectGraphConstructor as ApiObjectGraphConstructor;
 use Fjor\Api\Dsl\GivenClassOrInterface\ClassOrInterfaceBindings;
 use Fjor\Api\Dsl\GivenClassOrInterface\AndMethod\AddParam;
 use Epa\Api\EventDispatcher;
@@ -12,9 +12,9 @@ use Epa\Api\Plugin;
  * Provides a higher level DSL for Fjor.
  */
 class FjorDsl
-	implements ObjectGraphConstructor, ClassOrInterfaceBindings, AddParam
+	implements ApiObjectGraphConstructor, ClassOrInterfaceBindings, AddParam
 {
-	private $fjor;
+	private $ogc;
 
 	private $eventDispatcher;
 
@@ -22,9 +22,10 @@ class FjorDsl
 
 	private $method;
 
-	public function __construct(Fjor $fjor, EventDispatcher $eventDispatcher)
-	{
-		$this->fjor = $fjor;
+	public function __construct(
+		ObjectGraphConstructor $objectGraphConstructor, EventDispatcher $eventDispatcher
+	) {
+		$this->ogc = $objectGraphConstructor;
 		$this->eventDispatcher = $eventDispatcher;
 	}
 
@@ -41,7 +42,7 @@ class FjorDsl
 	 */
 	public function get($classOrInterface)
 	{
-		return $this->fjor->getInstance($classOrInterface);
+		return $this->ogc->getInstance($classOrInterface);
 	}
 
 	/**
@@ -60,7 +61,7 @@ class FjorDsl
 	 */
 	public function thenUse($classOrInterfaceOrFactoryOrClosure)
 	{
-		$this->fjor->addBinding($this->given, $classOrInterfaceOrFactoryOrClosure);
+		$this->ogc->addBinding($this->given, $classOrInterfaceOrFactoryOrClosure);
 	}
 
 	/**
@@ -68,7 +69,7 @@ class FjorDsl
 	 */
 	public function constructWith(array $values)
 	{
-		$this->fjor->inject($this->given, '__construct', $values);
+		$this->ogc->inject($this->given, '__construct', $values);
 	}
 
 	/**
@@ -85,7 +86,7 @@ class FjorDsl
 	 */
 	public function addParam(array $values = array())
 	{
-		$this->fjor->inject($this->given, $this->method, $values);
+		$this->ogc->inject($this->given, $this->method, $values);
 		return $this;
 	}
 
@@ -94,6 +95,6 @@ class FjorDsl
 	 */
 	public function setSingleton($classOrInterface)
 	{
-		$this->fjor->setSingleton($classOrInterface);
+		$this->ogc->setSingleton($classOrInterface);
 	}
 }

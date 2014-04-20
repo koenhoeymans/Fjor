@@ -8,7 +8,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 {
 	public function setup()
 	{
-		$this->fjor = $this->getMockBuilder('\\Fjor\\Fjor')
+		$this->ogc = $this->getMockBuilder('\\Fjor\\ObjectGraphConstructor')
 								->disableOriginalConstructor()
 								->getMock();
 		$this->factory = new \Fjor\ObjectFactory\GenericObjectFactory(); 
@@ -27,7 +27,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 		$this->assertEquals(
 			new \stdClass(),
 			$this->factory->createInstance(
-				'StdClass', $this->createInjectionMap(), $this->fjor
+				'StdClass', $this->createInjectionMap(), $this->ogc
 			)
 		);
 	}
@@ -42,7 +42,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 			$this->factory->createInstance(
 				'ArrayObject',
 				$this->createInjectionMap()->add('__construct', array(array('foo'))),
-				$this->fjor
+				$this->ogc
 			)
 		);
 	}
@@ -57,7 +57,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 			$this->factory->createInstance(
 				'\\Fjor\\UnitTests\\Support\\ClassWithOptionalDependency',
 				$this->createInjectionMap(),
-				$this->fjor
+				$this->ogc
 			)
 		);
 	}
@@ -69,7 +69,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 	{
 		$class = '\\Fjor\\UnitTests\\Support\\ClassWithDependency';
 
-		$this->fjor
+		$this->ogc
 			->expects($this->once())
 			->method('getInstance')
 			->with('\\SplObjectStorage')
@@ -80,7 +80,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 			$this->factory->createInstance(
 				$class,
 				$this->createInjectionMap()->add('__construct', array('\\SplObjectStorage')),
-				$this->fjor
+				$this->ogc
 			)
 		);
 	}
@@ -92,7 +92,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 	{
 		$class = '\\Fjor\\UnitTests\\Support\\ClassWithDependency';
 
-		$this->fjor
+		$this->ogc
 			->expects($this->never())
 			->method('getInstance');
 
@@ -101,7 +101,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 			$this->factory->createInstance(
 				$class,
 				$this->createInjectionMap()->add('__construct', array(new \SplObjectStorage())), 
-				$this->fjor
+				$this->ogc
 			)
 		);
 	}
@@ -113,7 +113,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 	{
 		$class = '\\Fjor\\UnitTests\\Support\\ClassWithMethodDependency';
 		
-		$this->fjor
+		$this->ogc
 			->expects($this->once())
 			->method('getInstance')
 			->with('StdClass')
@@ -127,7 +127,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 			$this->factory->createInstance(
 				$class,
 				$this->createInjectionMap()->add('set', array('StdClass')),
-				$this->fjor
+				$this->ogc
 			)
 		);
 	}

@@ -9,7 +9,7 @@ use Fjor\Injection\InjectionMap;
 /**
  * Construct an object graph using dependency injection.
  */
-class Fjor
+class ObjectGraphConstructor
 {
 	private $factory;
 

@@ -10,7 +10,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 	{
 		$this->factory = $this->getMock('\\Fjor\\ObjectFactory\\ObjectFactory');
 		$this->dispatcher = $this->getMock('\\Epa\\Api\\EventDispatcher');
-		$this->fjor = new \Fjor\Fjor($this->factory, $this->dispatcher);
+		$this->ogc = new \Fjor\ObjectGraphConstructor($this->factory, $this->dispatcher);
 	}
 
 	/**
@@ -23,7 +23,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->method('createInstance')
 			->will($this->returnValue(new stdClass()));
 
-		$obj = $this->fjor->getInstance('StdClass');
+		$obj = $this->ogc->getInstance('StdClass');
 
 		$this->assertEquals($obj, new \stdClass());
 	}
@@ -34,7 +34,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 	public function exceptionWhenClassOrInterfaceDoesNotExist()
 	{
 		try {
-			$this->fjor->getInstance('not exist');
+			$this->ogc->getInstance('not exist');
 			$this->fail();
 		}
 		catch (Exception $e)
@@ -51,11 +51,11 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->method('createInstance')
 			->will($this->returnValue(new \SplObjectStorage()));
 	
-		$this->fjor->setSingleton('SplObjectStorage');
+		$this->ogc->setSingleton('SplObjectStorage');
 	
 		$this->assertSame(
-			$this->fjor->getInstance('SplObjectStorage'),
-			$this->fjor->getInstance('SplObjectStorage')
+			$this->ogc->getInstance('SplObjectStorage'),
+			$this->ogc->getInstance('SplObjectStorage')
 		);
 	}
 
@@ -77,7 +77,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			new \Fjor\EndToEndTests\Support\ClassWithDependency(
 				new \StdClass()
 			),
-			$this->fjor->getInstance('\\Fjor\\EndToEndTests\\Support\\ClassWithDependency')
+			$this->ogc->getInstance('\\Fjor\\EndToEndTests\\Support\\ClassWithDependency')
 		);
 	}
 
@@ -92,13 +92,13 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->with(
 				'Fjor\\EndToEndTests\\Support\\ClassWithDependency',
 				new \Fjor\Injection\InjectionMap(),
-				$this->fjor
+				$this->ogc
 			)
 			->will($this->returnValue(
 				new \Fjor\EndToEndTests\Support\ClassWithOptionalDependency())
 			);
 		
-		$obj = $this->fjor->getInstance('Fjor\\EndToEndTests\\Support\\ClassWithDependency');
+		$obj = $this->ogc->getInstance('Fjor\\EndToEndTests\\Support\\ClassWithDependency');
 		
 		$this->assertEquals(
 			$obj,
@@ -112,7 +112,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 	public function throwsExceptionWhenNoBindingForInterface()
 	{
 		try {
-			$this->fjor->getInstance('\\SplSubject');
+			$this->ogc->getInstance('\\SplSubject');
 			$this->fail();
 		}
 		catch (Exception $e)
@@ -129,11 +129,11 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->method('createInstance')
 			->will($this->returnValue(new \SplObjectStorage()));
 
-		$this->fjor->addBinding('ArrayAccess', 'SplObjectStorage');
+		$this->ogc->addBinding('ArrayAccess', 'SplObjectStorage');
 
 		$this->assertEquals(
 			new \SplObjectStorage,
-			$this->fjor->getInstance('ArrayAccess')
+			$this->ogc->getInstance('ArrayAccess')
 		);
 	}
 
@@ -148,11 +148,11 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->expects($this->never())
 			->method('createInstance');
 		
-		$this->fjor->addBinding('ArrayAccess', $obj);
+		$this->ogc->addBinding('ArrayAccess', $obj);
 		
 		$this->assertSame(
 			$obj,
-			$this->fjor->getInstance('ArrayAccess')
+			$this->ogc->getInstance('ArrayAccess')
 		);
 	}
 
@@ -166,12 +166,12 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->method('createInstance')
 			->will($this->returnValue(new \SplObjectStorage()));
 	
-		$this->fjor->addBinding('ArrayAccess', 'SplObjectStorage');
-		$this->fjor->setSingleton('ArrayAccess');
+		$this->ogc->addBinding('ArrayAccess', 'SplObjectStorage');
+		$this->ogc->setSingleton('ArrayAccess');
 	
 		$this->assertSame(
-			$this->fjor->getInstance('ArrayAccess'),
-			$this->fjor->getInstance('ArrayAccess')
+			$this->ogc->getInstance('ArrayAccess'),
+			$this->ogc->getInstance('ArrayAccess')
 		);
 	}
 
@@ -188,8 +188,8 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->method('notify')
 			->with(new \Fjor\Events\AfterNew('SplObjectStorage', new \SplObjectStorage()));
 
-		$this->fjor->getInstance('SplObjectStorage');
-		$this->fjor->getInstance('SplObjectStorage');
+		$this->ogc->getInstance('SplObjectStorage');
+		$this->ogc->getInstance('SplObjectStorage');
 	}
 
 	/**
@@ -204,10 +204,10 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 		$this->dispatcher->expects($this->once())
 			->method('notify')
 			->with(new \Fjor\Events\AfterNew('SplObjectStorage', new \SplObjectStorage()));
-		$this->fjor->setSingleton('SplObjectStorage');
+		$this->ogc->setSingleton('SplObjectStorage');
 
-		$this->fjor->getInstance('SplObjectStorage');
-		$this->fjor->getInstance('SplObjectStorage');
+		$this->ogc->getInstance('SplObjectStorage');
+		$this->ogc->getInstance('SplObjectStorage');
 	}
 
 	/**
@@ -226,10 +226,10 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->method('createInstance')
 			->with('Fjor\\UnitTests\\Support\\ClassWithMethodDependency',
 				   $injectionMap,
-				   $this->fjor)
+				   $this->ogc)
 			->will($this->returnValue($obj));
 
-		$this->fjor->inject(
+		$this->ogc->inject(
 			'Fjor\\UnitTests\\Support\\ClassWithMethodDependency',
 			'set',
 			array(new \stdClass())
@@ -237,7 +237,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 
 		$this->assertEquals(
 			$obj,
-			$this->fjor->getInstance('\\Fjor\\UnitTests\\Support\\ClassWithMethodDependency')
+			$this->ogc->getInstance('\\Fjor\\UnitTests\\Support\\ClassWithMethodDependency')
 		);
 	}
 }
