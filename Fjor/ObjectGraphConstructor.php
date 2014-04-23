@@ -44,7 +44,8 @@ class ObjectGraphConstructor
 	private $injections = array();
 
 	public function __construct(
-		ObjectFactory $factory, EventDispatcher $eventDispatcher
+		ObjectFactory $factory,
+		EventDispatcher $eventDispatcher
 	) {
 		$this->factory = $factory;
 		$this->eventDispatcher = $eventDispatcher;
@@ -63,12 +64,10 @@ class ObjectGraphConstructor
 	{
 		$classOrInterface = $this->normalize($classOrInterface);
 
-		if (is_object($toClassOrInstance))
-		{
+		if (is_object($toClassOrInstance)) {
 			$this->addSingletonInstance($classOrInterface, $toClassOrInstance);
 		}
-		else
-		{
+		else {
 			$toClassOrInstance = $this->normalize($toClassOrInstance);
 			$this->bindings[$classOrInterface] = $toClassOrInstance;
 		}
@@ -100,13 +99,11 @@ class ObjectGraphConstructor
 
 		$obj = $this->getSingletonInstance($classOrInterface);
 
-		if (!$obj)
-		{
+		if (!$obj) {
 			$obj = $this->createObject($classOrInterface);
 		}
 
-		if ($this->isSingleton($classOrInterface))
-		{
+		if ($this->isSingleton($classOrInterface)) {
 			$this->addSingletonInstance($classOrInterface, $obj);
 		}
 
@@ -115,18 +112,16 @@ class ObjectGraphConstructor
 
 	private function createObject($classOrInterface)
 	{
-		if (class_exists($classOrInterface))
-		{
+		if (class_exists($classOrInterface)) {
 			$obj = $this->createClassInstance($classOrInterface);
 		}
-		elseif (interface_exists($classOrInterface))
-		{
+		elseif (interface_exists($classOrInterface)) {
 			$obj = $this->getInterfaceImplementation($classOrInterface);
 		}
-		else
-		{
+		else {
 			throw new \Exception(
-				'Interface or Class "' . $classOrInterface . '" does not seem to exist.'
+				'Interface or Class "' . $classOrInterface
+				. '" does not seem to exist.'
 			);
 		}
 
@@ -135,13 +130,14 @@ class ObjectGraphConstructor
 
 	private function createClassInstance($class)
 	{
-		if (!isset($this->bindings[$class]))
-		{
+		if (!isset($this->bindings[$class])) {
 			$this->bindings[$class] = $class;
 		}
 
 		$obj = $this->factory->createInstance(
-			$class, $this->getCombinedInjectionMap($class), $this
+			$class,
+			$this->getCombinedInjectionMap($class),
+			$this
 		);
 
 		$this->eventDispatcher->notify(new \Fjor\Events\AfterNew($class, $obj));
@@ -151,8 +147,7 @@ class ObjectGraphConstructor
 
 	private function getInterfaceImplementation($interface)
 	{
-		if (!isset($this->bindings[$interface]))
-		{
+		if (!isset($this->bindings[$interface])) {
 			throw new \Exception('No binding specified for ' . $interface);
 		}
 
@@ -187,8 +182,7 @@ class ObjectGraphConstructor
 
 	private function getInjectionMap($class)
 	{
-		if (!isset($this->injections[$class]))
-		{
+		if (!isset($this->injections[$class])) {
 			$this->createNewInjectionMap($class);
 		}
 
@@ -209,11 +203,9 @@ class ObjectGraphConstructor
 	private function getInjectionMapsForAll(array $classesAndInterfaces)
 	{
 		$maps = array();
-		foreach ($classesAndInterfaces as $classOrInterface)
-		{
+		foreach ($classesAndInterfaces as $classOrInterface) {
 			$map = $this->getInjectionMap($classOrInterface);
-			if ($map)
-			{
+			if ($map) {
 				$maps[] = $map;
 			}
 		}
@@ -224,8 +216,7 @@ class ObjectGraphConstructor
 	private function combineInjectionMaps(array $maps)
 	{
 		$newMap = array_shift($maps);
-		foreach ($maps as $map)
-		{
+		foreach ($maps as $map) {
 			$newMap = $map->combine($newMap);
 		}
 
@@ -234,8 +225,7 @@ class ObjectGraphConstructor
 
 	private function addToListOfSingletons($classOrInterface)
 	{
-		if (!in_array($classOrInterface, $this->singletons))
-		{
+		if (!in_array($classOrInterface, $this->singletons)) {
 			$this->singletons[$classOrInterface] = $classOrInterface;
 		}
 	}
@@ -247,8 +237,7 @@ class ObjectGraphConstructor
 
 	private function getSingletonInstance($classOrInterface)
 	{
-		if (isset($this->instances[$classOrInterface]))
-		{
+		if (isset($this->instances[$classOrInterface])) {
 			return $this->instances[$classOrInterface];
 		}
 	}
