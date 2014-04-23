@@ -33,12 +33,8 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function exceptionWhenClassOrInterfaceDoesNotExist()
 	{
-		try {
-			$this->ogc->getInstance('not exist');
-			$this->fail();
-		}
-		catch (Exception $e)
-		{}
+		$this->setExpectedException('Exception');
+		$this->ogc->getInstance('not exist');
 	}
 
 	/**
@@ -111,12 +107,9 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function throwsExceptionWhenNoBindingForInterface()
 	{
-		try {
-			$this->ogc->getInstance('\\SplSubject');
-			$this->fail();
-		}
-		catch (Exception $e)
-		{}
+		$this->setExpectedException('Exception');
+		$this->ogc->getInstance('\\SplSubject');
+		$this->fail();
 	}
 
 	/**
