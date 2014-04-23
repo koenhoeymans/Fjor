@@ -131,4 +131,17 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 			)
 		);
 	}
+
+	/**
+	 * @test
+	 */
+	public function throwsExceptionWhenCantFindValueForParameter()
+	{
+		$this->setExpectedException('Exception');
+		$this->factory->createInstance(
+			'Fjor\\UnitTests\\Support\\ClassWithDependency',
+			$this->createInjectionMap(),
+			$this->ogc
+		);
+	}
 }
