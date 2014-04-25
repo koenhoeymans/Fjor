@@ -27,8 +27,7 @@ class GenericObjectFactory implements ObjectFactory
 		$reflectionClass = new \ReflectionClass($className);
 		if (!$reflectionClass->hasMethod('__construct')) {
 			$obj = $reflectionClass->newInstanceArgs();
-		}
-		else {
+		} else {
 			$userSpecifiedArgs = $injectionMap->getParams('__construct')[0];
 			$args = $this->getMethodDependencies(
 				$userSpecifiedArgs,
@@ -65,43 +64,16 @@ class GenericObjectFactory implements ObjectFactory
 	) {
 		foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
 			$argumentPosition = $reflectionParameter->getPosition();
-			$userSpecifiedValue = isset($userSpecifiedArgs[$argumentPosition])
-				? $userSpecifiedArgs[$argumentPosition]
-				: null;
-
-			if (is_object($userSpecifiedValue)) {
-				continue;
-			}
-			elseif ($reflectionParameter->getClass()) {
-				$paramObj = $this->getObject(
-					$userSpecifiedValue,
-					$reflectionParameter->getClass()->getName()
-				);
-			}
-			elseif (isset($userSpecifiedValue)) {
-				continue;
-			}
-			elseif ($reflectionParameter->isDefaultValueAvailable()) {
-				$paramObj = $reflectionParameter->getDefaultValue();
-			}
-			elseif ($reflectionParameter->allowsNull()) {
-				$paramObj = null;
-			}
-			elseif ($reflectionParameter->isOptional()) {
-				continue;
-			}
-			else {
-				$class = $reflectionMethod->getDeclaringClass()->getName();
-				$method = $reflectionMethod->getName();
-				$param = $reflectionParameter->getName();
-				throw new \Exception(
-					'No dependency specified for "' . $class . '::' . $method
-					. '" on position ' . $argumentPosition . ', parametername $'
-					. $param
+			if (!isset($userSpecifiedArgs[$argumentPosition])) {
+				$value = $this->findValueForArgument($reflectionParameter);
+			} else {
+				$value = $this->adaptValueForParam(
+					$userSpecifiedArgs[$argumentPosition],
+					$reflectionParameter
 				);
 			}
 
-			$userSpecifiedArgs[$argumentPosition] = $paramObj;
+			$userSpecifiedArgs[$argumentPosition] = $value;
 		}
 
 		ksort($userSpecifiedArgs);
@@ -109,15 +81,44 @@ class GenericObjectFactory implements ObjectFactory
 		return $userSpecifiedArgs;
 	}
 
-	private function getObject(
-		$userGivenClassName = null,
-		$paramClassOrInterfaceName
+	private function findValueForArgument(\ReflectionParameter $reflectionParameter)
+	{
+		if ($reflectionParameter->getClass()) {
+			return $this->ogc->getInstance(
+				$reflectionParameter->getClass()->getName()
+			);
+		}
+		if ($reflectionParameter->isDefaultValueAvailable()) {
+			return $reflectionParameter->getDefaultValue();
+		}
+		if ($reflectionParameter->allowsNull()) {
+			return null;
+		}
+		if ($reflectionParameter->isOptional()) {
+			return;
+		}
+
+		$class = $reflectionParameter->getDeclaringClass()->getName();
+		$method = $reflectionParameter->getDeclaringFunction()->getName();
+		$argumentPosition = $reflectionParameter->getPosition();
+		$paramName = $reflectionParameter->getName();
+		throw new \Exception(
+			'No dependency specified for "' . $class . '::' . $method
+			. '" on position ' . $argumentPosition . ', parametername $'
+			. $paramName
+		);
+	}
+
+	private function adaptValueForParam(
+		$value,
+		\ReflectionParameter $reflectionParameter
 	) {
-		if ($userGivenClassName) {
-			return $this->ogc->getInstance($userGivenClassName);
+		if (is_object($value)) {
+			return $value;
 		}
-		else {
-			return $this->ogc->getInstance($paramClassOrInterfaceName);
+		if ($reflectionParameter->getClass()) {
+			return $this->ogc->getInstance($value);
 		}
+		return $value;
 	}
 }

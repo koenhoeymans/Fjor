@@ -135,12 +135,25 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 	/**
 	 * @test
 	 */
+	public function detectsWhenParamterIsOptional()
+	{
+		// SplObjectStorage::attach has an optional second parameter
+		$this->factory->createInstance(
+			'SplObjectStorage',
+			$this->createInjectionMap()->add('attach', array(new \StdClass())),
+			$this->ogc
+		);
+	}
+
+	/**
+	 * @test
+	 */
 	public function throwsExceptionWhenCantFindValueForParameter()
 	{
 		$this->setExpectedException('Exception');
 		$this->factory->createInstance(
-			'Fjor\\UnitTests\\Support\\ClassWithDependency',
-			$this->createInjectionMap(),
+			'SplObjectStorage',
+			$this->createInjectionMap()->add('attach', array()),
 			$this->ogc
 		);
 	}
