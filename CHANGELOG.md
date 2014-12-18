@@ -1,6 +1,11 @@
 Fjor Changelog
 ==============
 
+*   0.2.0
+
+    *   Reorganizsd projected directory structure.
+    *   Conform to PSR-3 and PSR-4.
+
 *	0.1.5
 
 	*	Updated to `Epa` version 0.2.0.

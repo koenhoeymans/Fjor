@@ -1,10 +1,8 @@
 <?php
 
-require_once dirname(__FILE__)
-	. DIRECTORY_SEPARATOR . '..' 
-	. DIRECTORY_SEPARATOR . 'TestHelper.php';
+namespace Fjor\ObjectFactory;
 
-class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_TestCase
+class GenericObjectFactoryTest extends \PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
@@ -53,9 +51,9 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 	public function optionalArgumentsAreNotInjectedIfNotSpecified()
 	{
 		$this->assertEquals(
-			new \Fjor\UnitTests\Support\ClassWithOptionalDependency(),
+			new \Fjor\ClassWithOptionalDependency(),
 			$this->factory->createInstance(
-				'\\Fjor\\UnitTests\\Support\\ClassWithOptionalDependency',
+				'\\Fjor\\ClassWithOptionalDependency',
 				$this->createInjectionMap(),
 				$this->ogc
 			)
@@ -67,7 +65,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 	 */
 	public function triesToFindBindingInSpecifiedArguments()
 	{
-		$class = '\\Fjor\\UnitTests\\Support\\ClassWithDependency';
+		$class = '\\Fjor\\ClassWithConstructorDependency';
 
 		$this->ogc
 			->expects($this->once())
@@ -90,7 +88,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 	 */
 	public function canTakeObjectAsParameter()
 	{
-		$class = '\\Fjor\\UnitTests\\Support\\ClassWithDependency';
+		$class = '\\Fjor\\ClassWithConstructorDependency';
 
 		$this->ogc
 			->expects($this->never())
@@ -111,7 +109,7 @@ class Fjor_ObjectFactory_GenericObjectFactoryTest extends PHPUnit_Framework_Test
 	 */
 	public function injectsSpecifiedParametersInMethods()
 	{
-		$class = '\\Fjor\\UnitTests\\Support\\ClassWithMethodDependency';
+		$class = '\\Fjor\\ClassWithMethodDependency';
 		
 		$this->ogc
 			->expects($this->once())

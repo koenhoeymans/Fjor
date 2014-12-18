@@ -1,10 +1,10 @@
 <?php
 
+namespace Fjor;
+
 use Fjor\Dsl\Dsl;
 
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestHelper.php';
-
-class Fjor_FjorTest extends PHPUnit_Framework_TestCase
+class FjorTest extends \PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
@@ -21,7 +21,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 		$this->factory
 			->expects($this->atLeastOnce())
 			->method('createInstance')
-			->will($this->returnValue(new stdClass()));
+			->will($this->returnValue(new \stdClass()));
 
 		$obj = $this->ogc->getInstance('StdClass');
 
@@ -64,16 +64,16 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->expects($this->atLeastOnce())
 			->method('createInstance')
 			->will($this->returnValue(
-				new \Fjor\EndToEndTests\Support\ClassWithDependency(
+				new \Fjor\ClassWithConstructorAndMethodDependency(
 					new \StdClass()
 				))
 			);
 
 		$this->assertEquals(
-			new \Fjor\EndToEndTests\Support\ClassWithDependency(
+			new \Fjor\ClassWithConstructorAndMethodDependency(
 				new \StdClass()
 			),
-			$this->ogc->getInstance('\\Fjor\\EndToEndTests\\Support\\ClassWithDependency')
+			$this->ogc->getInstance('\\Fjor\\ClassWithConstructorAndMethodDependency')
 		);
 	}
 
@@ -86,19 +86,19 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 			->expects($this->atLeastOnce())
 			->method('createInstance')
 			->with(
-				'Fjor\\EndToEndTests\\Support\\ClassWithDependency',
+				'Fjor\\ClassWithConstructorDependency',
 				new \Fjor\Injection\InjectionMap(),
 				$this->ogc
 			)
 			->will($this->returnValue(
-				new \Fjor\EndToEndTests\Support\ClassWithOptionalDependency())
+				new \Fjor\ClassWithOptionalDependency())
 			);
 		
-		$obj = $this->ogc->getInstance('Fjor\\EndToEndTests\\Support\\ClassWithDependency');
+		$obj = $this->ogc->getInstance('Fjor\\ClassWithConstructorDependency');
 		
 		$this->assertEquals(
 			$obj,
-			new \Fjor\EndToEndTests\Support\ClassWithOptionalDependency
+			new \Fjor\ClassWithOptionalDependency
 		);
 	}
 
@@ -208,7 +208,7 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function canSpecifyValuesForMethodToBeInjected()
 	{
-		$obj = new \Fjor\UnitTests\Support\ClassWithMethodDependency();
+		$obj = new \Fjor\ClassWithMethodDependency();
 		$obj->set(new \stdClass());
 
 		$injectionMap = new \Fjor\Injection\InjectionMap();
@@ -217,20 +217,20 @@ class Fjor_FjorTest extends PHPUnit_Framework_TestCase
 		$this->factory
 			->expects($this->once())
 			->method('createInstance')
-			->with('Fjor\\UnitTests\\Support\\ClassWithMethodDependency',
+			->with('Fjor\\ClassWithMethodDependency',
 				   $injectionMap,
 				   $this->ogc)
 			->will($this->returnValue($obj));
 
 		$this->ogc->inject(
-			'Fjor\\UnitTests\\Support\\ClassWithMethodDependency',
+			'Fjor\\ClassWithMethodDependency',
 			'set',
 			array(new \stdClass())
 		);
 
 		$this->assertEquals(
 			$obj,
-			$this->ogc->getInstance('\\Fjor\\UnitTests\\Support\\ClassWithMethodDependency')
+			$this->ogc->getInstance('\\Fjor\\ClassWithMethodDependency')
 		);
 	}
 }

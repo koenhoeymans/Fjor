@@ -1,6 +1,6 @@
 <?php
 
-namespace Fjor\UnitTests\Support;
+namespace Fjor;
 
 class ClassWithOptionalDependency
 {

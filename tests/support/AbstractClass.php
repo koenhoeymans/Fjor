@@ -1,6 +1,6 @@
 <?php
 
-namespace Fjor\EndToEndTests\Support;
+namespace Fjor;
 
 abstract class AbstractClass
 {

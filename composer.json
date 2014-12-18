@@ -15,6 +15,6 @@
         "phpunit/phpunit": "*"
     },
 	"autoload": {
-		"psr-0": { "Fjor": "/" }
+		"psr-4": { "Fjor\\": ["src/", "tests/unit", "tests/e2e", "tests/support"] }
 	}
 }

@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestHelper.php';
+namespace Fjor;
 
-class Fjor_FjorDslTest extends PHPUnit_Framework_TestCase
+class FjorDslTest extends \PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{

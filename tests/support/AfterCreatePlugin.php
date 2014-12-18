@@ -1,6 +1,6 @@
 <?php
 
-namespace Fjor\EndToEndTests\Support;
+namespace Fjor;
 
 use Fjor\Api\Events\AfterNew;
 use Epa\Api\EventDispatcher;

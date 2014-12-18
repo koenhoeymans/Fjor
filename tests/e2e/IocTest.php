@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestHelper.php';
+namespace Fjor;
 
-class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
+class IocTest extends \PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
@@ -41,8 +41,8 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 	public function aClassDependencyIsInjectedAutomatically()
 	{
 		$this->assertEquals(
-			new \Fjor\EndToEndTests\Support\ClassWithDependency(new \StdClass()),
-			$this->ioc->get('\\Fjor\\EndToEndTests\\Support\\ClassWithDependency')
+			new \Fjor\ClassWithConstructorAndMethodDependency(new \StdClass()),
+			$this->ioc->get('\\Fjor\\ClassWithConstructorAndMethodDependency')
 		);
 	}
 
@@ -52,7 +52,7 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 	public function anOptionalDependencyUsesDefaultValueIfNotSpecified()
 	{
 		$obj = $this->ioc->get(
-			'\\Fjor\\EndToEndTests\\Support\\ClassWithOptionalDependency'
+			'\\Fjor\\ClassWithOptionalDependency'
 		);
 
 		$this->assertNull($obj->getDependency());
@@ -129,7 +129,7 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 	 */
 	public function missingDependenciesAreAutoresolved()
 	{
-		$class = '\\Fjor\\EndToEndTests\\Support\\ClassWithMultipleConstructorArguments';
+		$class = '\\Fjor\\ClassWithMultipleConstructorArguments';
 
 		$this->ioc->given('ArrayAccess')->thenUse('SplObjectStorage');
 
@@ -148,7 +148,7 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 	 */
 	public function bindingsCanBeSpecifiedAsInjectionParameter()
 	{
-		$class = '\\Fjor\\EndToEndTests\\Support\\ClassWithMultipleConstructorArguments';
+		$class = '\\Fjor\\ClassWithMultipleConstructorArguments';
 
 		$this->ioc
 			->given($class)
@@ -165,7 +165,7 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 	 */
 	public function specificConstructorBindingHasHigherWeightThanGeneral()
 	{
-		$class = '\\Fjor\\EndToEndTests\\Support\\ClassWithMultipleConstructorArguments';
+		$class = '\\Fjor\\ClassWithMultipleConstructorArguments';
 		
 		$this->ioc->given('ArrayAccess')->thenUse('\\ArrayObject');
 
@@ -184,7 +184,7 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 	*/
 	public function specificConstructorBindingCanTakeObjectAsValue()
 	{
-		$class = '\\Fjor\\EndToEndTests\\Support\\ClassWithMultipleConstructorArguments';
+		$class = '\\Fjor\\ClassWithMultipleConstructorArguments';
 
 		$this->ioc
 			->given($class)
@@ -230,16 +230,16 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
 	public function classesCanBeSpecifiedForMethodInjection()
 	{
 		$this->ioc
-			->given('\\Fjor\\EndToEndTests\\Support\\ClassWithDependency')
+			->given('\\Fjor\\ClassWithConstructorAndMethodDependency')
 			->andMethod('set')
 			->addParam(array('StdClass'));
 
-		$obj = new \Fjor\EndToEndTests\Support\ClassWithDependency(new \StdClass());
-		$obj->set(new StdClass);
+		$obj = new \Fjor\ClassWithConstructorAndMethodDependency(new \StdClass());
+		$obj->set(new \StdClass);
 
 		$this->assertEquals(
 			$obj,
-			$this->ioc->get('\\Fjor\\EndToEndTests\\Support\\ClassWithDependency')
+			$this->ioc->get('\\Fjor\\ClassWithConstructorAndMethodDependency')
 		);
 	}
 
@@ -249,10 +249,10 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
  	public function methodCanBeSpecifiedForConstructionOfClass()
  	{
  		$this->ioc
- 			->given('\\Fjor\\EndToEndTests\\Support\\ClassWithDependency')
+ 			->given('\\Fjor\\ClassWithConstructorAndMethodDependency')
  			->andMethod('set')
  			->addParam();
- 		$obj = $this->ioc->get('\\Fjor\\EndToEndTests\\Support\\ClassWithDependency');
+ 		$obj = $this->ioc->get('\\Fjor\\ClassWithConstructorAndMethodDependency');
  
  		$this->assertEquals(
  			new \stdClass(), $obj->getMethodDependency()
@@ -299,10 +299,10 @@ class Fjor_EndToEndTests_IocTest extends PHPUnit_Framework_TestCase
  	public function argumentsCanBeSetForAbstractClassesSoImplementationWillInheritSettings()
  	{
  		$this->ioc
-	 		->given('\\Fjor\\EndToEndTests\\Support\\AbstractClass')
+	 		->given('\\Fjor\\AbstractClass')
 	 		->andMethod('set')
 	 		->addParam(array('foo'));
- 		$obj = $this->ioc->get('\\Fjor\\EndToEndTests\\Support\\ExtendingClass');
+ 		$obj = $this->ioc->get('\\Fjor\\ExtendingClass');
 
  		$this->assertEquals('foo', $obj->get());
  	}

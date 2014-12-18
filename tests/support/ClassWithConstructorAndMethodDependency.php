@@ -1,8 +1,8 @@
 <?php
 
-namespace Fjor\EndToEndTests\Support;
+namespace Fjor;
 
-class ClassWithDependency
+class ClassWithConstructorAndMethodDependency
 {
 	private $constructorDep;
 

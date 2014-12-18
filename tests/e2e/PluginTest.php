@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestHelper.php';
+namespace Fjor;
 
-class Fjor_EndToEndTests_PluginTest extends PHPUnit_Framework_TestCase
+class PluginTest extends \PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
@@ -14,7 +14,7 @@ class Fjor_EndToEndTests_PluginTest extends PHPUnit_Framework_TestCase
 	 */
 	public function pluginsAreAllowedToInteractWithFjor()
 	{
-		$plugin = new \Fjor\EndToEndTests\Support\AfterCreatePlugin();
+		$plugin = new \Fjor\AfterCreatePlugin();
 
 		$this->ioc->addPlugin($plugin);
 
