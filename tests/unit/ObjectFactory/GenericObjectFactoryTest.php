@@ -25,7 +25,9 @@ class GenericObjectFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new \stdClass(),
             $this->factory->createInstance(
-                'StdClass', $this->createInjectionMap(), $this->ogc
+                'StdClass',
+                $this->createInjectionMap(),
+                $this->ogc
             )
         );
     }

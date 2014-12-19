@@ -61,10 +61,12 @@ class ObjectGraphConstructorTest extends \PHPUnit_Framework_TestCase
         $this->factory
             ->expects($this->atLeastOnce())
             ->method('createInstance')
-            ->will($this->returnValue(
-                new \Fjor\ClassWithConstructorAndMethodDependency(
-                    new \StdClass()
-                ))
+            ->will(
+                $this->returnValue(
+                    new \Fjor\ClassWithConstructorAndMethodDependency(
+                        new \StdClass()
+                    )
+                )
             );
 
         $this->assertEquals(
@@ -88,8 +90,10 @@ class ObjectGraphConstructorTest extends \PHPUnit_Framework_TestCase
                 new \Fjor\Injection\InjectionMap(),
                 $this->ogc
             )
-            ->will($this->returnValue(
-                new \Fjor\ClassWithOptionalDependency())
+            ->will(
+                $this->returnValue(
+                    new \Fjor\ClassWithOptionalDependency()
+                )
             );
 
         $obj = $this->ogc->getInstance('Fjor\\ClassWithConstructorDependency');
@@ -215,9 +219,11 @@ class ObjectGraphConstructorTest extends \PHPUnit_Framework_TestCase
         $this->factory
             ->expects($this->once())
             ->method('createInstance')
-            ->with('Fjor\\ClassWithMethodDependency',
-                   $injectionMap,
-                   $this->ogc)
+            ->with(
+                'Fjor\\ClassWithMethodDependency',
+                $injectionMap,
+                $this->ogc
+            )
             ->will($this->returnValue($obj));
 
         $this->ogc->inject(

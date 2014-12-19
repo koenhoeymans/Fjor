@@ -92,7 +92,8 @@ class IocTest extends \PHPUnit_Framework_TestCase
         $this->ioc->setSingleton('SplObjectStorage');
 
         $this->assertSame(
-            $this->ioc->get('SplObjectStorage'), $this->ioc->get('SplObjectStorage')
+            $this->ioc->get('SplObjectStorage'),
+            $this->ioc->get('SplObjectStorage')
         );
     }
 
@@ -106,7 +107,8 @@ class IocTest extends \PHPUnit_Framework_TestCase
         $this->ioc->given('ArrayAccess')->thenUse($obj);
 
         $this->assertSame(
-            $this->ioc->get('ArrayAccess'), $this->ioc->get('ArrayAccess')
+            $this->ioc->get('ArrayAccess'),
+            $this->ioc->get('ArrayAccess')
         );
     }
 
@@ -138,8 +140,8 @@ class IocTest extends \PHPUnit_Framework_TestCase
             ->constructWith(array(0 => 'foo', 2 => 'bar'));
 
         $this->assertEquals(
-             new $class('foo', new \SplObjectStorage(),    'bar'),
-             $this->ioc->get($class)
+            new $class('foo', new \SplObjectStorage(),    'bar'),
+            $this->ioc->get($class)
         );
     }
 
@@ -255,7 +257,8 @@ class IocTest extends \PHPUnit_Framework_TestCase
         $obj = $this->ioc->get('\\Fjor\\ClassWithConstructorAndMethodDependency');
 
         $this->assertEquals(
-            new \stdClass(), $obj->getMethodDependency()
+            new \stdClass(),
+            $obj->getMethodDependency()
         );
     }
 
@@ -318,7 +321,8 @@ class IocTest extends \PHPUnit_Framework_TestCase
         $this->ioc->given('\\Iterator')->thenUse($class);
 
         $this->assertSame(
-            $this->ioc->get('\\ArrayAccess'), $this->ioc->get('\\Iterator')
+            $this->ioc->get('\\ArrayAccess'),
+            $this->ioc->get('\\Iterator')
         );
     }
 }

@@ -6,10 +6,10 @@ class InjectionMap
 {
     /**
      * $injections = array(
-     * 	$method => array(
-     * 		array($firstParamsToInject),
-     * 		array($secondParamsToInject)
-     * 	)
+     *     $method => array(
+     *         array($firstParamsToInject),
+     *         array($secondParamsToInject)
+     *     )
      * );
      *
      * @var array
