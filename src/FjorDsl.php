@@ -11,8 +11,10 @@ use Epa\Api\Plugin;
 /**
  * Provides a higher level DSL for Fjor.
  */
-class FjorDsl
-    implements ApiObjectGraphConstructor, ClassOrInterfaceBindings, AddParam
+class FjorDsl implements
+    ApiObjectGraphConstructor,
+    ClassOrInterfaceBindings,
+    AddParam
 {
     private $ogc;
 
@@ -23,7 +25,8 @@ class FjorDsl
     private $method;
 
     public function __construct(
-        ObjectGraphConstructor $objectGraphConstructor, EventDispatcher $eventDispatcher
+        ObjectGraphConstructor $objectGraphConstructor,
+        EventDispatcher $eventDispatcher
     ) {
         $this->ogc = $objectGraphConstructor;
         $this->eventDispatcher = $eventDispatcher;
