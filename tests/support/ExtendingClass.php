@@ -4,15 +4,15 @@ namespace Fjor;
 
 class ExtendingClass extends AbstractClass
 {
-	private $value;
+    private $value;
 
-	public function get()
-	{
-		return $this->value;
-	}
+    public function get()
+    {
+        return $this->value;
+    }
 
-	public function set($foo)
-	{
-		$this->value = $foo;
-	}
+    public function set($foo)
+    {
+        $this->value = $foo;
+    }
 }

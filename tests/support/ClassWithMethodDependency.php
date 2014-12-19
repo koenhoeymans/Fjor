@@ -4,10 +4,10 @@ namespace Fjor;
 
 class ClassWithMethodDependency
 {
-	private $obj;
+    private $obj;
 
-	public function set(\StdClass $obj)
-	{
-		$this->obj = $obj;
-	}
+    public function set(\StdClass $obj)
+    {
+        $this->obj = $obj;
+    }
 }

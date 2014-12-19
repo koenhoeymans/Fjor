@@ -7,17 +7,17 @@ namespace Fjor\Api\Events;
  */
 interface AfterNew
 {
-	/**
-	 * Get the class that was instantiated.
-	 * 
-	 * @return string
-	 */
-	public function getClass();
+    /**
+     * Get the class that was instantiated.
+     *
+     * @return string
+     */
+    public function getClass();
 
-	/**
-	 * Get the object that was created.
-	 * 
-	 * @return mixed
-	 */
-	public function getObject();
+    /**
+     * Get the object that was created.
+     *
+     * @return mixed
+     */
+    public function getObject();
 }

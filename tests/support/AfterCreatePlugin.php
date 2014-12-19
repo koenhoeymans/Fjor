@@ -8,26 +8,25 @@ use Epa\Api\Plugin;
 
 class AfterCreatePlugin implements Plugin
 {
-	private $called = array();
+    private $called = array();
 
-	public function registerHandlers(EventDispatcher $dispatcher)
-	{
-		$dispatcher->registerForEvent(
-			'Fjor\\Api\\Events\\AfterNew',
-			function(AfterNew $afterNew)
-			{
-				$this->callMe($afterNew);
-			}
-		);
-	}
+    public function registerHandlers(EventDispatcher $dispatcher)
+    {
+        $dispatcher->registerForEvent(
+            'Fjor\\Api\\Events\\AfterNew',
+            function (AfterNew $afterNew) {
+                $this->callMe($afterNew);
+            }
+        );
+    }
 
-	public function wasCalledAfterCreationOf($class)
-	{
-		return in_array($class, $this->called);
-	}
+    public function wasCalledAfterCreationOf($class)
+    {
+        return in_array($class, $this->called);
+    }
 
-	public function callMe(AfterNew $event)
-	{
-		$this->called[] = $event->getClass();
-	}
+    public function callMe(AfterNew $event)
+    {
+        $this->called[] = $event->getClass();
+    }
 }

@@ -4,27 +4,27 @@ namespace Fjor;
 
 class ClassWithConstructorAndMethodDependency
 {
-	private $constructorDep;
+    private $constructorDep;
 
-	private $methodDep;
+    private $methodDep;
 
-	public function __construct(\StdClass $obj)
-	{
-		$this->constructorDep = $obj;
-	}
+    public function __construct(\StdClass $obj)
+    {
+        $this->constructorDep = $obj;
+    }
 
-	public function getConstructorDependency()
-	{
-		return $this->constructorDep;
-	}
+    public function getConstructorDependency()
+    {
+        return $this->constructorDep;
+    }
 
-	public function set(\StdClass $obj)
-	{
-		$this->methodDep = $obj;
-	}
+    public function set(\StdClass $obj)
+    {
+        $this->methodDep = $obj;
+    }
 
-	public function getMethodDependency()
-	{
-		return $this->methodDep;
-	}
+    public function getMethodDependency()
+    {
+        return $this->methodDep;
+    }
 }

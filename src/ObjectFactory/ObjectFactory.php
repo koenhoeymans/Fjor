@@ -2,12 +2,12 @@
 
 namespace Fjor\ObjectFactory;
 
-Use Fjor\ObjectGraphConstructor;
-Use Fjor\Injection\InjectionMap;
+use Fjor\ObjectGraphConstructor;
+use Fjor\Injection\InjectionMap;
 
 interface ObjectFactory
 {
-	public function createInstance(
-		$class, InjectionMap $injections, ObjectGraphConstructor $ogc
-	);
+    public function createInstance(
+        $class, InjectionMap $injections, ObjectGraphConstructor $ogc
+    );
 }
