@@ -49,7 +49,7 @@ class FjorDsl implements
     }
 
     /**
-     * @see \Fjor\Api\ObjectConstructor::given()
+     * @see \Fjor\Api\ObjectGraphConstructor::given()
      */
     public function given($classOrInterface)
     {
