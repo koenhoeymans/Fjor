@@ -12,8 +12,7 @@
 		"epa/epa": "~0.4.0"
 	},
 	"require-dev": {
-        "phpunit/phpunit": "*",
-        "qualitycheck/qualitycheck": "*"
+        "phpunit/phpunit": "*"
     },
 	"autoload": {
 		"psr-4": { "Fjor\\": ["src/", "tests/unit", "tests/e2e", "tests/support"] }
