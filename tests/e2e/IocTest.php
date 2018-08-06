@@ -2,7 +2,7 @@
 
 namespace Fjor;
 
-class IocTest extends \PHPUnit_Framework_TestCase
+class IocTest extends \PHPUnit\Framework\TestCase
 {
     public function setup()
     {

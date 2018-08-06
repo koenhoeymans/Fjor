@@ -2,14 +2,15 @@
 
 namespace Fjor;
 
-class FjorDslTest extends \PHPUnit_Framework_TestCase
+class FjorDslTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp()
     {
         $this->ogc = $this->getMockBuilder('\\Fjor\\ObjectGraphConstructor')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->eventDispatcher = $this->getMock('\\Epa\\Api\\EventDispatcher');
+        $this->eventDispatcher = $this->getMockBuilder('\\Epa\\Api\\EventDispatcher')
+            ->getMock();
         $this->dsl = new \Fjor\FjorDsl($this->ogc, $this->eventDispatcher);
     }
 
@@ -18,7 +19,7 @@ class FjorDslTest extends \PHPUnit_Framework_TestCase
      */
     public function addsPluginsToEventDispatcher()
     {
-        $plugin = $this->getMock('\\Epa\\Api\\Plugin');
+        $plugin = $this->getMockBuilder('\\Epa\\Api\\Plugin')->getMock();
         $this->eventDispatcher
             ->expects($this->once())
             ->method('addPlugin')

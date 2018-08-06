@@ -2,12 +2,14 @@
 
 namespace Fjor;
 
-class ObjectGraphConstructorTest extends \PHPUnit_Framework_TestCase
+class ObjectGraphConstructorTest extends \PHPUnit\Framework\TestCase
 {
     public function setup()
     {
-        $this->factory = $this->getMock('\\Fjor\\ObjectFactory\\ObjectFactory');
-        $this->dispatcher = $this->getMock('\\Epa\\Api\\EventDispatcher');
+        $this->factory = $this->getMockBuilder('\\Fjor\\ObjectFactory\\ObjectFactory')
+            ->getMock();
+        $this->dispatcher = $this->getMockBuilder('\\Epa\\Api\\EventDispatcher')
+            ->getMock();
         $this->ogc = new \Fjor\ObjectGraphConstructor($this->factory, $this->dispatcher);
     }
 
@@ -31,7 +33,7 @@ class ObjectGraphConstructorTest extends \PHPUnit_Framework_TestCase
      */
     public function exceptionWhenClassOrInterfaceDoesNotExist()
     {
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $this->ogc->getInstance('not exist');
     }
 
@@ -109,7 +111,7 @@ class ObjectGraphConstructorTest extends \PHPUnit_Framework_TestCase
      */
     public function throwsExceptionWhenNoBindingForInterface()
     {
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $this->ogc->getInstance('\\SplSubject');
         $this->fail();
     }

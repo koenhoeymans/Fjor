@@ -2,7 +2,7 @@
 
 namespace Fjor;
 
-class FjorFactoryTest extends \PHPUnit_Framework_TestCase
+class FjorFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

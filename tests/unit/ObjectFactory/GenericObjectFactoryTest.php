@@ -2,7 +2,7 @@
 
 namespace Fjor\ObjectFactory;
 
-class GenericObjectFactoryTest extends \PHPUnit_Framework_TestCase
+class GenericObjectFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function setup()
     {
@@ -150,7 +150,7 @@ class GenericObjectFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function throwsExceptionWhenCantFindValueForParameter()
     {
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $this->factory->createInstance(
             'SplObjectStorage',
             $this->createInjectionMap()->add('attach', array()),
