@@ -65,6 +65,12 @@ class GenericObjectFactory implements ObjectFactory
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             $argumentPosition = $reflectionParameter->getPosition();
             if (!isset($userSpecifiedArgs[$argumentPosition])) {
+                # assumes that if no value is specified for an optional parameter
+                # without defaults then further parameters are not specified
+                # neither.
+                if ($reflectionParameter->isOptional()) {
+                    return $userSpecifiedArgs;
+                }
                 $value = $this->findValueForArgument($reflectionParameter);
             } else {
                 $value = $this->adaptValueForParam(
@@ -92,12 +98,9 @@ class GenericObjectFactory implements ObjectFactory
             return $reflectionParameter->getDefaultValue();
         }
         if ($reflectionParameter->allowsNull()) {
-            return;
+            return null;
         }
-        if ($reflectionParameter->isOptional()) {
-            return;
-        }
-
+        
         $class = $reflectionParameter->getDeclaringClass()->getName();
         $method = $reflectionParameter->getDeclaringFunction()->getName();
         $argumentPosition = $reflectionParameter->getPosition();
