@@ -4,11 +4,10 @@
 	"license": "BSD-2-Clause",
 	"authors": [{
 		"name": "Koen Hoeymans",
-		"email": "koenhoeymans@gmail.com",
-		"role": "lead"
+		"email": "koenhoeymans@gmail.com"
 	}],
 	"require": {
-		"php": ">=5.4.6",
+		"php": ">=7.2",
 		"epa/epa": "~0.4.0"
 	},
 	"require-dev": {
