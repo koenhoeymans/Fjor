@@ -1,5 +1,15 @@
-Fjor Changelog
-==============
+# Fjor Changelog
+
+## [Unreleased]
+
+### Changed
+
+- Require PHPUnit 7.*
+- Minimum PHP 7.2 required.
+- Changelog format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
+
+
+## older changes
 
 *   0.2.0
 
