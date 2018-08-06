@@ -138,11 +138,13 @@ class GenericObjectFactoryTest extends \PHPUnit\Framework\TestCase
     public function detectsWhenParamterIsOptional()
     {
         // SplObjectStorage::attach has an optional second parameter
-        $this->factory->createInstance(
+        $obj = $this->factory->createInstance(
             'SplObjectStorage',
             $this->createInjectionMap()->add('attach', array(new \StdClass())),
             $this->ogc
         );
+
+        $this->assertTrue($obj instanceof \SplObjectStorage);
     }
 
     /**
