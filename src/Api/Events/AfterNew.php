@@ -9,10 +9,8 @@ interface AfterNew
 {
     /**
      * Get the class that was instantiated.
-     *
-     * @return string
      */
-    public function getClass();
+    public function getClass() : string;
 
     /**
      * Get the object that was created.

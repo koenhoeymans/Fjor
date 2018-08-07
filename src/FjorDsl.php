@@ -33,9 +33,9 @@ class FjorDsl implements
     }
 
     /**
-     * @see \Fjor\Api\ObjectConstructor::addPlugin()
+     * @see \Fjor\Api\ObjectGraphConstructor::addPlugin()
      */
-    public function addPlugin(Plugin $plugin)
+    public function addPlugin(Plugin $plugin) : void
     {
         $this->eventDispatcher->addPlugin($plugin);
     }
@@ -43,7 +43,7 @@ class FjorDsl implements
     /**
      * @see \Fjor\Api\ObjectGraphConstructor::get()
      */
-    public function get($classOrInterface)
+    public function get(string $classOrInterface)
     {
         return $this->ogc->getInstance($classOrInterface);
     }
@@ -51,7 +51,7 @@ class FjorDsl implements
     /**
      * @see \Fjor\Api\ObjectGraphConstructor::given()
      */
-    public function given($classOrInterface)
+    public function given(string $classOrInterface) : \Fjor\Api\Dsl\GivenClassOrInterface\ClassOrInterfaceBindings
     {
         $this->given = $classOrInterface;
         $this->method = null;
@@ -62,7 +62,7 @@ class FjorDsl implements
     /**
      * @see \Fjor\Api\Dsl\GivenClassOrInterface\ThenUse::thenUse()
      */
-    public function thenUse($classOrInterfaceOrFactoryOrClosure)
+    public function thenUse($classOrInterfaceOrFactoryOrClosure) : void
     {
         $this->ogc->addBinding($this->given, $classOrInterfaceOrFactoryOrClosure);
     }
@@ -70,7 +70,7 @@ class FjorDsl implements
     /**
      * @see \Fjor\Api\Dsl\GivenClassOrInterface\ConstructWith::constructWith()
      */
-    public function constructWith(array $values)
+    public function constructWith(array $values) : void
     {
         $this->ogc->inject($this->given, '__construct', $values);
     }
@@ -78,7 +78,7 @@ class FjorDsl implements
     /**
      * @see \Fjor\Api\Dsl\GivenClassOrInterface\AndMethod::andMethod()
      */
-    public function andMethod($method)
+    public function andMethod(string $method) : \Fjor\Api\Dsl\GivenClassOrInterface\AndMethod\AddParam
     {
         $this->method = $method;
 
@@ -88,7 +88,7 @@ class FjorDsl implements
     /**
      * @see \Fjor\Api\Dsl\GivenClassOrInterface\AndMethod\AddParam::addParam()
      */
-    public function addParam(array $values = array())
+    public function addParam(array $values = array()) : addParam
     {
         $this->ogc->inject($this->given, $this->method, $values);
 
@@ -98,7 +98,7 @@ class FjorDsl implements
     /**
      * @see \Fjor\Api\ObjectGraphConstructor::setSingleton()
      */
-    public function setSingleton($classOrInterface)
+    public function setSingleton(string $classOrInterface) : void
     {
         $this->ogc->setSingleton($classOrInterface);
     }

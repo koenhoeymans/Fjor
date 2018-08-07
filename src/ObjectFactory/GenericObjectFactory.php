@@ -10,10 +10,10 @@ class GenericObjectFactory implements ObjectFactory
     private $ogc;
 
     public function createInstance(
-        $class,
+        string $class,
         InjectionMap $injectionMap,
         ObjectGraphConstructor $ogc
-    ) {
+    ) : object {
         $this->ogc = $ogc;
 
         $obj = $this->createObject($class, $injectionMap);

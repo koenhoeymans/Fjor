@@ -7,31 +7,14 @@ namespace Fjor\Api;
  */
 interface ObjectGraphConstructor
 {
-    /**
-     * @param \Epa\Api\Plugin $plugin
-     *
-     * @return void
-     */
-    public function addPlugin(\Epa\Api\Plugin $plugin);
+    public function addPlugin(\Epa\Api\Plugin $plugin) : void;
 
     /**
-     * @param string $classOrInterface
-     *
      * @return mixed
      */
-    public function get($classOrInterface);
+    public function get(string $classOrInterface);
 
-    /**
-     * @param string $classOrInterface
-     *
-     * @return \Fjor\Api\Dsl\GivenClassOrInterface\ClassOrInterfaceBindings
-     */
-    public function given($classOrInterface);
+    public function given(string $classOrInterface) : \Fjor\Api\Dsl\GivenClassOrInterface\ClassOrInterfaceBindings;
 
-    /**
-     * @param string $classOrInterface
-     *
-     * @return void
-     */
-    public function setSingleton($classOrInterface);
+    public function setSingleton(string $classOrInterface) : void;
 }

@@ -10,7 +10,7 @@ class AfterNew implements Event, \Fjor\Api\Events\AfterNew
 
     private $object;
 
-    public function __construct($class, $object)
+    public function __construct(string $class, object $object)
     {
         $this->class = $class;
         $this->object = $object;
@@ -19,7 +19,7 @@ class AfterNew implements Event, \Fjor\Api\Events\AfterNew
     /**
      * @see \Fjor\Api\Events\AfterNew::getClass()
      */
-    public function getClass()
+    public function getClass() : string
     {
         return $this->class;
     }

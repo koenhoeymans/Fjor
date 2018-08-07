@@ -16,20 +16,15 @@ class InjectionMap
      */
     private $injections = array();
 
-    /**
-     * @return array
-     */
-    public function getMethods()
+    public function getMethods() : array
     {
         return array_keys($this->injections);
     }
 
     /**
-     * @param string $method
-     *
      * @return array An array of arrays with parameters.
      */
-    public function getParams($method)
+    public function getParams(string $method) : array
     {
         return isset($this->injections[$method]) ?
             $this->injections[$method] : array(array());
@@ -38,11 +33,8 @@ class InjectionMap
     /**
      * Parameters to inject for a given method. May be called
      * more than once.
-     *
-     * @param string $method
-     * @param array  $params
      */
-    public function add($method, array $params)
+    public function add(string $method, array $params) : InjectionMap
     {
         $this->injections[$method][] = $params;
 
@@ -51,12 +43,8 @@ class InjectionMap
 
     /**
      * Adds injections from a map to this one and returns a new combined one.
-     *
-     * @param InjectionMap $map
-     *
-     * @return InjectionMap A new InjectionMap.
      */
-    public function combine(InjectionMap $map)
+    public function combine(InjectionMap $map) : InjectionMap
     {
         $combinedMap = clone $this;
         $methods = $map->getMethods();

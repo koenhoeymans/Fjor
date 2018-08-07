@@ -8,8 +8,8 @@ use Fjor\Injection\InjectionMap;
 interface ObjectFactory
 {
     public function createInstance(
-        $class,
+        string $class,
         InjectionMap $injections,
         ObjectGraphConstructor $ogc
-    );
+    ) : object;
 }

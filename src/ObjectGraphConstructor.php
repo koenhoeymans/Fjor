@@ -17,29 +17,21 @@ class ObjectGraphConstructor
 
     /**
      * A list of interfaces or classes that should be singletons.
-     *
-     * @var array
      */
     private $singletons = array();
 
     /**
      * array('interface|class' => $instance')
-     *
-     * @var array
      */
     private $instances = array();
 
     /**
      * array('class/interface' => $class);
-     *
-     * @var array
      */
     private $bindings = array();
 
     /**
      * array($class => InjectionMap);
-     *
-     * @var array
      */
     private $injections = array();
 
@@ -55,12 +47,9 @@ class ObjectGraphConstructor
      * Specifies wich class or instance should be used when an interface or
      * class is encountered.
      *
-     * @param string $classOrInterface
      * @param mixed  $toClassOrInstance
-     *
-     * @return void
      */
-    public function addBinding($classOrInterface, $toClassOrInstance)
+    public function addBinding(string $classOrInterface, $toClassOrInstance) : void
     {
         $classOrInterface = $this->normalize($classOrInterface);
 
@@ -75,24 +64,16 @@ class ObjectGraphConstructor
     /**
      * Set an interface or class as singleton. The same object will be used
      * every time the interface or class is encountered.
-     *
-     * @param string $classOrInterface
-     *
-     * @return void
      */
-    public function setSingleton($classOrInterface)
+    public function setSingleton(string $classOrInterface) : void
     {
         $this->addToListOfSingletons($this->normalize($classOrInterface));
     }
 
     /**
      * Get an instance of a class or interface.
-     *
-     * @param string $classOrInterface
-     *
-     * @return mixed
      */
-    public function getInstance($classOrInterface)
+    public function getInstance(string $classOrInterface) : object
     {
         $classOrInterface = $this->normalize($classOrInterface);
 
