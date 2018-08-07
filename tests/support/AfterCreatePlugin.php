@@ -10,7 +10,7 @@ class AfterCreatePlugin implements Plugin
 {
     private $called = array();
 
-    public function registerHandlers(EventDispatcher $dispatcher)
+    public function registerHandlers(EventDispatcher $dispatcher) : void
     {
         $dispatcher->registerForEvent(
             'Fjor\\Api\\Events\\AfterNew',
