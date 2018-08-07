@@ -1,7 +1,6 @@
 # Fjor Changelog
 
-## [Unreleased]
-
+## [0.3.0] - 2018-08-07
 ### Changed
 
 - Require PHPUnit 7.*
