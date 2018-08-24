@@ -77,7 +77,7 @@ class FjorDslTest extends \PHPUnit\Framework\TestCase
             ->method('inject')
             ->with('Foo', 'doX', array('value'));
 
-        $this->dsl->given('Foo')->andMethod('doX')->addParam(array('value'));
+        $this->dsl->given('Foo')->andMethod('doX')->addParam('value');
     }
 
     /**

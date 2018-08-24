@@ -1,5 +1,10 @@
 # Fjor Changelog
 
+## [Unreleased]
+### Changed
+- `addParam()` doesn't require an array with parameters to be injected. Parameters
+  are now specified the way they should be injected.
+
 ## [0.3.0] - 2018-08-07
 ### Changed
 

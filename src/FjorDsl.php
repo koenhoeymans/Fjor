@@ -88,8 +88,9 @@ class FjorDsl implements
     /**
      * @see \Fjor\Api\Dsl\GivenClassOrInterface\AndMethod\AddParam::addParam()
      */
-    public function addParam(array $values = array()) : addParam
+    public function addParam(...$values) : addParam
     {
+
         $this->ogc->inject($this->given, $this->method, $values);
 
         return $this;

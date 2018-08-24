@@ -207,7 +207,7 @@ class IocTest extends \PHPUnit\Framework\TestCase
         $this->ioc
             ->given('SplObjectStorage')
             ->andMethod('attach')
-            ->addParam(array($obj));
+            ->addParam($obj);
         $storage = $this->ioc->get('SplObjectStorage');
 
         $this->assertTrue($storage->contains($obj));
@@ -221,7 +221,7 @@ class IocTest extends \PHPUnit\Framework\TestCase
         $this->ioc
             ->given('SplStack')
             ->andMethod('push')
-            ->addParam(array(5));
+            ->addParam(5);
 
         $this->assertEquals(5, $this->ioc->get('SplStack')->pop());
     }
@@ -234,7 +234,7 @@ class IocTest extends \PHPUnit\Framework\TestCase
         $this->ioc
             ->given('\\Fjor\\ClassWithConstructorAndMethodDependency')
             ->andMethod('set')
-            ->addParam(array('StdClass'));
+            ->addParam('StdClass');
 
         $obj = new \Fjor\ClassWithConstructorAndMethodDependency(new \StdClass());
         $obj->set(new \StdClass());
@@ -272,8 +272,8 @@ class IocTest extends \PHPUnit\Framework\TestCase
         $this->ioc
             ->given('SplObjectStorage')
             ->andMethod('attach')
-            ->addParam(array($obj1))
-            ->addParam(array($obj2));
+            ->addParam($obj1)
+            ->addParam($obj2);
         $storage = $this->ioc->get('SplObjectStorage');
 
         $this->assertTrue($storage->contains($obj1));
@@ -289,7 +289,7 @@ class IocTest extends \PHPUnit\Framework\TestCase
         $this->ioc
             ->given('ArrayAccess')
             ->andMethod('offsetSet')
-            ->addParam(array($obj, 'foo'));
+            ->addParam($obj, 'foo');
 
         $storage = $this->ioc->get('SplObjectStorage');
 
@@ -304,7 +304,7 @@ class IocTest extends \PHPUnit\Framework\TestCase
         $this->ioc
             ->given('\\Fjor\\AbstractClass')
             ->andMethod('set')
-            ->addParam(array('foo'));
+            ->addParam('foo');
         $obj = $this->ioc->get('\\Fjor\\ExtendingClass');
 
         $this->assertEquals('foo', $obj->get());
