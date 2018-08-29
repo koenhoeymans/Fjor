@@ -325,4 +325,16 @@ class IocTest extends \PHPUnit\Framework\TestCase
             $this->ioc->get('\\Iterator')
         );
     }
+
+    /**
+     * @test
+     */
+    public function injectsObjectsByReference()
+    {
+        $std = new \StdClass();
+        $ogc = \Fjor\FjorFactory::create();
+        $ogc->given('\\Fjor\\ClassWithMethodDependency')->andMethod('set')->addParam($std);
+
+        $this->assertSame($std, $ogc->get('\\Fjor\\ClassWithMethodDependency')->get());
+    }
 }
