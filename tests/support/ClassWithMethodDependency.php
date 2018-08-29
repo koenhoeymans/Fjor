@@ -10,4 +10,9 @@ class ClassWithMethodDependency
     {
         $this->obj = $obj;
     }
+
+    public function get()
+    {
+        return $this->obj;
+    }
 }

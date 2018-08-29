@@ -239,4 +239,16 @@ class ObjectGraphConstructorTest extends \PHPUnit\Framework\TestCase
             $this->ogc->getInstance('\\Fjor\\ClassWithMethodDependency')
         );
     }
+
+    /**
+     * @test
+     */
+    public function injectsObjectsByReference()
+    {
+        $std = new \StdClass();
+        $ogc = \Fjor\FjorFactory::create();
+        $ogc->given('\\Fjor\\ClassWithMethodDependency')->andMethod('set')->addParam($std);
+
+        $this->assertSame($std, $ogc->get('\\Fjor\\ClassWithMethodDependency')->get());
+    }
 }
